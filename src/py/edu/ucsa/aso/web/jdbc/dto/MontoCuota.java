@@ -1,6 +1,5 @@
 package py.edu.ucsa.aso.web.jdbc.dto;
 
-
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -26,7 +25,6 @@ public class MontoCuota {
 		this.numeroCuota = numeroCuota;
 	}
 
-
 	public int getMontoCuota() {
 		return montoCuota;
 	}
@@ -42,5 +40,13 @@ public class MontoCuota {
 	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}
+
+	@Override
+	public String toString() {
+		return "MontoCuota [id=" + id + ", montoCuota=" + montoCuota + ", numeroCuota=" + numeroCuota
+				+ ", fechaVencimiento=" + fechaVencimiento + "]";
+	}
+
+
 
 }

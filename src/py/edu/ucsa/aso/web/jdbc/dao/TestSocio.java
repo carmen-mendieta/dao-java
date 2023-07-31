@@ -1,12 +1,18 @@
 package py.edu.ucsa.aso.web.jdbc.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import py.edu.ucsa.aso.web.jdbc.dto.MontoCuota;
 import py.edu.ucsa.aso.web.jdbc.dto.Socio;
 
 public class TestSocio {
+	
+	/*
+	 * SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); Date fecha =
+	 * sdf.parse("2023-08-10");
+	 */
 	public static void main(String[] args) {
 		/*
 		 * lista de socios List<Socio> socios = new ArrayList<>(); socios =
@@ -34,12 +40,24 @@ public class TestSocio {
 //	Socio sociod=DAOFactory.getSocioDAO().getSocioByNroCedula("5848038");
 //       System.out.println(sociod);
 		
+		/*
+		 * List<MontoCuota> montocuotas = new ArrayList<>(); montocuotas =
+		 * DAOFactory.getMontoCuotaDAO().listar(); for (MontoCuota cuota : montocuotas)
+		 * { System.out.println(cuota.getId());
+		 * System.out.println(cuota.getMontoCuota()); }
+		 */
 		
-		  List<MontoCuota> montocuotas = new ArrayList<>(); 
-		  montocuotas = DAOFactory.getMontoCuotaDAO().listar();
-		  for (MontoCuota cuota : montocuotas) {
-		  System.out.println(cuota.getId());
-		  System.out.println(cuota.getMontoCuota()); }
+		/*
+		 * MontoCuota mto =DAOFactory.getMontoCuotaDAO().getById(3);
+		 * System.out.println(mto);
+		 */
+		
+		MontoCuota mc= new MontoCuota();
+		 mc.setMontoCuota(50000);
+		 mc.setNumeroCuota(5);
+		 mc.setFechaVencimiento(java.sql.Date.valueOf("2023-07-31"));
+		 DAOFactory.getMontoCuotaDAO().insertar(mc);
+		  
 		 
 	}
 
