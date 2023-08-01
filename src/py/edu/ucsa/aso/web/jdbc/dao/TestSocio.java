@@ -8,7 +8,7 @@ import py.edu.ucsa.aso.web.jdbc.dto.MontoCuota;
 import py.edu.ucsa.aso.web.jdbc.dto.Socio;
 
 public class TestSocio {
-	
+
 	/*
 	 * SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); Date fecha =
 	 * sdf.parse("2023-08-10");
@@ -36,29 +36,31 @@ public class TestSocio {
 //		DAOFactory.getSocioDAO().modificar(socioi);
 //
 //		DAOFactory.getSocioDAO().eliminar(154727);
-		
+
 //	Socio sociod=DAOFactory.getSocioDAO().getSocioByNroCedula("5848038");
 //       System.out.println(sociod);
-		
+
 		/*
 		 * List<MontoCuota> montocuotas = new ArrayList<>(); montocuotas =
 		 * DAOFactory.getMontoCuotaDAO().listar(); for (MontoCuota cuota : montocuotas)
 		 * { System.out.println(cuota.getId());
 		 * System.out.println(cuota.getMontoCuota()); }
 		 */
-		
+
 		/*
 		 * MontoCuota mto =DAOFactory.getMontoCuotaDAO().getById(3);
 		 * System.out.println(mto);
 		 */
-		
-		MontoCuota mc= new MontoCuota();
-		 mc.setMontoCuota(50000);
-		 mc.setNumeroCuota(5);
-		 mc.setFechaVencimiento(java.sql.Date.valueOf("2023-07-31"));
-		 DAOFactory.getMontoCuotaDAO().insertar(mc);
-		  
-		 
+
+		/*
+		 * MontoCuota mc= new MontoCuota(); mc.setId(5); mc.setMontoCuota(60000);
+		 * mc.setNumeroCuota(4);
+		 * mc.setFechaVencimiento(java.sql.Date.valueOf("2023-09-01"));
+		 * DAOFactory.getMontoCuotaDAO().modificar(mc);
+		 */
+
+		DAOFactory.getMontoCuotaDAO().eliminar(4);
+
 	}
 
 }

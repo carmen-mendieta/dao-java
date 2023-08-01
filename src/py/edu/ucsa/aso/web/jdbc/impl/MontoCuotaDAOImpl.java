@@ -92,14 +92,43 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 	}
 
 	@Override
-	public MontoCuota modificar(MontoCuota objeto) {
-		// TODO Auto-generated method stub
+	public MontoCuota modificar(MontoCuota mca) {
+		Connection c;
+		try {
+			c = ConexionBD.getConexion();
+			PreparedStatement ps = c.prepareStatement(
+			"UPDATE montocuota set monto = ?, numerocuota = ?,fechavencimiento= ?  WHERE idmontocuota = ?");
+			ps.setInt(1, mca.getMontoCuota());
+			ps.setInt(2, mca.getNumeroCuota());
+			ps.setDate(3, mca.getFechaVencimiento());
+			ps.setInt(4, mca.getId());
+			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
+			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
+			System.out.println("REGISTROS ACTUALIZADOS: " + cant);
+			ps.close();
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 
 	@Override
 	public void eliminar(int id) {
-		// TODO Auto-generated method stub
+		Connection c;
+		try {
+			c = ConexionBD.getConexion();
+			PreparedStatement ps = c.prepareStatement(" DELETE  FROM montocuota  WHERE idmontocuota = ?");
+			ps.setInt(1, id);
+			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
+			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
+			System.out.println("REGISTRO ELIMINADO: " + cant);
+			ps.close();
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
