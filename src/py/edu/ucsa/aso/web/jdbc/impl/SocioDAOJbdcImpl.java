@@ -17,21 +17,18 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 	public List<Socio> listar() {
 		Connection c;
 		List<Socio> listaSocios = new ArrayList<>();
-		String select = "SELECT * FROM socio ";
+		String select = "SELECT * FROM socios order by nombres asc ";
 
 		try {
-
 			c = ConexionBD.getConexion();
 			ResultSet rs = c.createStatement().executeQuery(select);
-			Socio s = null;
+			Socio socio = null;
 			while (rs.next()) {
-				s = new Socio();
-				s.setNrosocio(rs.getInt("NumeroSocio"));
-				s.setNombre(rs.getString("Nombre"));
-				s.setApellido(rs.getString("Apellido"));
-				s.setCedula(rs.getString("Cedula"));
-				s.setCelular(rs.getString("Celular"));
-				listaSocios.add(s);
+				socio = new Socio();
+				socio.setId(rs.getInt("id"));
+				socio.setNombres("nombres");
+				socio.setApellidos("apellidos");
+				listaSocios.add(socio);
 
 			}
 			c.close();
@@ -55,11 +52,11 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				s = new Socio();
-				s.setNrosocio(rs.getInt("NumeroSocio"));
-				s.setNombre(rs.getString("Nombre"));
-				s.setApellido(rs.getString("Apellido"));
-				s.setCedula(rs.getString("Cedula"));
-				s.setCelular(rs.getString("Celular"));
+				/*
+				 * s.setNrosocio(rs.getInt("NumeroSocio")); s.setNombre(rs.getString("Nombre"));
+				 * s.setApellido(rs.getString("Apellido")); s.setCedula(rs.getString("Cedula"));
+				 * s.setCelular(rs.getString("Celular"));
+				 */
 			}
 
 		} catch (Exception e) {
@@ -76,11 +73,11 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 			c = ConexionBD.getConexion();
 			PreparedStatement ps = c.prepareStatement(
 					"INSERT INTO Socio " + "(NumeroSocio, Nombre, Apellido, Cedula, Celular)" + " VALUES(?,?,?,?,?)");
-			ps.setInt(1, socio.getNrosocio());
-			ps.setString(2, socio.getNombre());
-			ps.setString(3, socio.getApellido());
-			ps.setString(4, socio.getCedula());
-			ps.setString(5, socio.getCelular());
+			/*
+			 * ps.setInt(1, socio.getNrosocio()); ps.setString(2, socio.getNombre());
+			 * ps.setString(3, socio.getApellido()); ps.setString(4, socio.getCedula());
+			 * ps.setString(5, socio.getCelular());
+			 */
 			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
 			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
 			System.out.println("REGISTROS INSERTADOS: " + cant);
@@ -99,11 +96,11 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 			c = ConexionBD.getConexion();
 			PreparedStatement ps = c.prepareStatement(
 					"UPDATE socio set nombre = ?, apellido = ?, cedula = ?, celular = ?  WHERE numerosocio = ?");
-			ps.setString(1, socio.getNombre());
-			ps.setString(2, socio.getApellido());
-			ps.setString(3, socio.getCedula());
-			ps.setString(4, socio.getCelular());
-			ps.setInt(5, socio.getNrosocio());
+			/*
+			 * ps.setString(1, socio.getNombre()); ps.setString(2, socio.getApellido());
+			 * ps.setString(3, socio.getCedula()); ps.setString(4, socio.getCelular());
+			 * ps.setInt(5, socio.getNrosocio());
+			 */
 			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
 			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
 			System.out.println("REGISTROS ACTUALIZADOS: " + cant);
@@ -146,11 +143,11 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				s = new Socio();
-				s.setNrosocio(rs.getInt("NumeroSocio"));
-				s.setNombre(rs.getString("Nombre"));
-				s.setApellido(rs.getString("Apellido"));
-				s.setCedula(rs.getString("Cedula"));
-				s.setCelular(rs.getString("Celular"));
+				/*
+				 * s.setNrosocio(rs.getInt("NumeroSocio")); s.setNombre(rs.getString("Nombre"));
+				 * s.setApellido(rs.getString("Apellido")); s.setCedula(rs.getString("Cedula"));
+				 * s.setCelular(rs.getString("Celular"));
+				 */
 			}
 
 		} catch (Exception e) {

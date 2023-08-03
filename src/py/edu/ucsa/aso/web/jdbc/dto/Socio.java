@@ -1,56 +1,135 @@
 package py.edu.ucsa.aso.web.jdbc.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Socio {
-	private int nrosocio;
-	private String nombre;
-	private String apellido;
-	private String cedula;
-	private String celular;
+	private Integer id;
+	private String nombres;
+	private String apellidos;
+	private String email;
+	private Integer nroSocio;
+	private String nroCedula;
+	private LocalDate fechaIngreso;
+	private Opcion estadoActual;
 
-	public int getNrosocio() {
-		return nrosocio;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setNrosocio(int nrosocio) {
-		this.nrosocio = nrosocio;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombres() {
+		return nombres;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
 	}
 
-	public String getApellido() {
-		return apellido;
+	public String getApellidos() {
+		return apellidos;
 	}
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
 
-	public String getCedula() {
-		return cedula;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCedula(String cedula) {
-		this.cedula = cedula;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getCelular() {
-		return celular;
+	public Integer getNroSocio() {
+		return nroSocio;
 	}
 
-	public void setCelular(String celular) {
-		this.celular = celular;
+	public void setNroSocio(Integer nroSocio) {
+		this.nroSocio = nroSocio;
 	}
 
-	@Override
-	public String toString() {
-		return "Socio [nrosocio=" + nrosocio + ", nombre=" + nombre + ", apellido=" + apellido + ", cedula=" + cedula
-				+ ", celular=" + celular + "]";
+	public String getNroCedula() {
+		return nroCedula;
 	}
+
+	public void setNroCedula(String nroCedula) {
+		this.nroCedula = nroCedula;
+	}
+
+	public LocalDate getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public void setFechaIngreso(LocalDate fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+
+	public Opcion getEstadoActual() {
+		return estadoActual;
+	}
+
+	public void setEstadoActual(Opcion estadoActual) {
+		this.estadoActual = estadoActual;
+	}
+
+	public LocalDateTime getFechaEstadoActual() {
+		return fechaEstadoActual;
+	}
+
+	public void setFechaEstadoActual(LocalDateTime fechaEstadoActual) {
+		this.fechaEstadoActual = fechaEstadoActual;
+	}
+
+	public boolean isFundador() {
+		return fundador;
+	}
+
+	public void setFundador(boolean fundador) {
+		this.fundador = fundador;
+	}
+
+	public Usuario getUsuarioCreacion() {
+		return usuarioCreacion;
+	}
+
+	public void setUsuarioCreacion(Usuario usuarioCreacion) {
+		this.usuarioCreacion = usuarioCreacion;
+	}
+
+	public LocalDateTime getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(LocalDateTime fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Socio getSocioPoponente() {
+		return socioPoponente;
+	}
+
+	public void setSocioPoponente(Socio socioPoponente) {
+		this.socioPoponente = socioPoponente;
+	}
+
+	public Opcion getTipoSocio() {
+		return tipoSocio;
+	}
+
+	public void setTipoSocio(Opcion tipoSocio) {
+		this.tipoSocio = tipoSocio;
+	}
+
+	private LocalDateTime fechaEstadoActual;
+	private boolean fundador;
+	private Usuario usuarioCreacion;
+	private LocalDateTime fechaCreacion;
+	private Socio socioPoponente;
+	private Opcion tipoSocio;
 
 }

@@ -11,6 +11,7 @@ import py.edu.aso.web.conexion.ConexionBD;
 import py.edu.ucsa.aso.web.jdbc.dao.MontoCuotaDAO;
 import py.edu.ucsa.aso.web.jdbc.dto.MontoCuota;
 import py.edu.ucsa.aso.web.jdbc.dto.Socio;
+import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 
@@ -18,20 +19,13 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 	public List<MontoCuota> listar() {
 		Connection c;
 		List<MontoCuota> listMontoCuotas = new ArrayList<>();
-		String select = "SELECT * FROM montocuota ";
-
+		String select = "SELECT * FROM montos_cuota ";
 		try {
-
 			c = ConexionBD.getConexion();
 			ResultSet rs = c.createStatement().executeQuery(select);
 			MontoCuota m = null;
 			while (rs.next()) {
-				m = new MontoCuota();
-				m.setId(rs.getInt("idmontocuota"));
-				m.setMontoCuota(rs.getInt("monto"));
-				m.setNumeroCuota(rs.getInt("numerocuota"));
-				m.setFechaVencimiento(rs.getDate("fechavencimiento"));
-
+				m = setValoresMontoCuota(rs);
 				listMontoCuotas.add(m);
 
 			}
@@ -44,29 +38,42 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 		return listMontoCuotas;
 	}
 
+	private MontoCuota setValoresMontoCuota(ResultSet rs) throws SQLException {
+		MontoCuota m;
+		m = new MontoCuota();
+		m.setId(rs.getInt("idmontocuota"));
+		m.setMonto(rs.getDouble("monto"));
+		m.setFechaCreacion(rs.getTimestamp("fecha_inicio_vigencia").toLocalDateTime());
+		m.setFechaCreacion(rs.getTimestamp("fecha_fin_vigencia").toLocalDateTime());
+		m.setEstado(rs.getString("estado"));
+		m.setFechaCreacion(rs.getTimestamp("fecha_fin_inactivacion").toLocalDateTime());
+		m.setUsuarioInactivacion(new Usuario(rs.getInt("id_usuario_inactivacion")));
+		return m;
+	}
+
 	@Override
 	public MontoCuota getById(int id) {
 		Connection c;
-		String select = "SELECT * FROM montocuota where idmontocuota = ? ";
+		String select = "SELECT * FROM montos_cuota where id = ? ";
 		MontoCuota mt = null;
+		c = ConexionBD.getConexion();
 		try {
-			c = ConexionBD.getConexion();
+		
 			PreparedStatement ps = c.prepareStatement(select);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				mt = new MontoCuota();
-				mt.setId(rs.getInt("idmontocuota"));
-				mt.setMontoCuota(rs.getInt("monto"));
-				mt.setNumeroCuota(rs.getInt("numerocuota"));
-				mt.setFechaVencimiento(rs.getDate("fechavencimiento"));
+			if (rs.next()) {
+				mt = setValoresMontoCuota(rs);
+				return mt;
 			}
 
 		} catch (Exception e) {
 			System.out.println("Fallo al ejecutar la query" + e.getMessage());
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
 
-		return mt;
+		return null;
 
 	}
 
@@ -77,7 +84,7 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 			c = ConexionBD.getConexion();
 			PreparedStatement ps = c.prepareStatement(
 					"INSERT INTO montocuota " + "( monto, numerocuota, fechavencimiento)" + " VALUES(?,?,?)");
-			ps.setInt(1, montoc.getMontoCuota());
+			// ps.setInt(1, montoc.getMontoCuota());
 			ps.setInt(2, montoc.getNumeroCuota());
 			ps.setDate(3, montoc.getFechaVencimiento());
 			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
@@ -97,8 +104,8 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 		try {
 			c = ConexionBD.getConexion();
 			PreparedStatement ps = c.prepareStatement(
-			"UPDATE montocuota set monto = ?, numerocuota = ?,fechavencimiento= ?  WHERE idmontocuota = ?");
-			ps.setInt(1, mca.getMontoCuota());
+					"UPDATE montocuota set monto = ?, numerocuota = ?,fechavencimiento= ?  WHERE idmontocuota = ?");
+			// ps.setInt(1, mca.getMontoCuota());
 			ps.setInt(2, mca.getNumeroCuota());
 			ps.setDate(3, mca.getFechaVencimiento());
 			ps.setInt(4, mca.getId());
@@ -130,6 +137,12 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public MontoCuota getMontoCuotaByMesAnho(int mes, int anho) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package py.edu.ucsa.aso.web.jdbc.dao;
 
-public interface OpcionDAO {
+import py.edu.ucsa.aso.web.jdbc.dto.Opcion;
+
+public interface OpcionDAO extends GenericDAO<Opcion> {
 
 }
