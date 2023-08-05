@@ -7,6 +7,12 @@ public class Opcion {
 	private String estado;
 	private Dominio dominio;
 	private Opcion opcionPadre;
+	
+
+	public Opcion(Integer id) {
+		super();
+		this.id = id;
+	}
 
 	public Integer getId() {
 		return id;

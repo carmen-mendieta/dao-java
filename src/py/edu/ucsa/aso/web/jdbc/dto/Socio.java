@@ -1,6 +1,5 @@
 package py.edu.ucsa.aso.web.jdbc.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Socio {
@@ -9,9 +8,24 @@ public class Socio {
 	private String apellidos;
 	private String email;
 	private Integer nroSocio;
-	private String nroCedula;
-	private LocalDate fechaIngreso;
+	private Integer nroCedula;
+	private LocalDateTime fechaIngreso;
 	private Opcion estadoActual;
+	private LocalDateTime fechaEstadoActual;
+	private boolean fundador;
+	private Usuario usuarioCreacion;
+	private LocalDateTime fechaCreacion;
+	private Socio socioPoponente;
+	private Opcion tipoSocio;
+
+	public Socio() {
+		super();
+	}
+
+	public Socio(Integer id) {
+		super();
+		this.id = id;
+	}
 
 	public Integer getId() {
 		return id;
@@ -53,19 +67,19 @@ public class Socio {
 		this.nroSocio = nroSocio;
 	}
 
-	public String getNroCedula() {
+	public Integer getNroCedula() {
 		return nroCedula;
 	}
 
-	public void setNroCedula(String nroCedula) {
+	public void setNroCedula(Integer nroCedula) {
 		this.nroCedula = nroCedula;
 	}
 
-	public LocalDate getFechaIngreso() {
+	public LocalDateTime getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public void setFechaIngreso(LocalDate fechaIngreso) {
+	public void setFechaIngreso(LocalDateTime fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 
@@ -124,12 +138,5 @@ public class Socio {
 	public void setTipoSocio(Opcion tipoSocio) {
 		this.tipoSocio = tipoSocio;
 	}
-
-	private LocalDateTime fechaEstadoActual;
-	private boolean fundador;
-	private Usuario usuarioCreacion;
-	private LocalDateTime fechaCreacion;
-	private Socio socioPoponente;
-	private Opcion tipoSocio;
 
 }

@@ -9,7 +9,9 @@ import java.util.List;
 
 import py.edu.aso.web.conexion.ConexionBD;
 import py.edu.ucsa.aso.web.jdbc.dao.SocioDAO;
+import py.edu.ucsa.aso.web.jdbc.dto.Opcion;
 import py.edu.ucsa.aso.web.jdbc.dto.Socio;
+import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class SocioDAOJbdcImpl implements SocioDAO {
 
@@ -18,16 +20,13 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		Connection c;
 		List<Socio> listaSocios = new ArrayList<>();
 		String select = "SELECT * FROM socios order by nombres asc ";
-
+		c = ConexionBD.getConexion();
 		try {
-			c = ConexionBD.getConexion();
+
 			ResultSet rs = c.createStatement().executeQuery(select);
 			Socio socio = null;
 			while (rs.next()) {
-				socio = new Socio();
-				socio.setId(rs.getInt("id"));
-				socio.setNombres("nombres");
-				socio.setApellidos("apellidos");
+				socio = SetDatosSocios(rs);
 				listaSocios.add(socio);
 
 			}
@@ -36,31 +35,52 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 
 		} catch (SQLException e) {
 			System.out.println("Fallo al ejecutar la query " + e.getMessage());
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
 		return listaSocios;
+	}
+
+	private Socio SetDatosSocios(ResultSet rs) throws SQLException {
+		Socio socio;
+		socio = new Socio();
+		socio.setId(rs.getInt("id"));
+		socio.setNombres(rs.getString("nombres"));
+		socio.setApellidos(rs.getString("apellidos"));
+		socio.setEmail(rs.getString("email"));
+		socio.setNroSocio(rs.getInt("nro_socio"));
+		socio.setNroCedula(rs.getInt("nro_cedula"));
+		socio.setFechaIngreso(rs.getTimestamp("fecha_ingreso").toLocalDateTime());
+		socio.setEstadoActual(new Opcion (rs.getInt("id_estado_actual")));
+		socio.setFechaEstadoActual(rs.getTimestamp("fecha_estado_actual").toLocalDateTime());
+		socio.setFundador(rs.getBoolean("fundador"));
+		socio.setUsuarioCreacion(new Usuario(rs.getInt("id_usuario_creacion")));
+		socio.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+		socio.setSocioPoponente(new Socio(rs.getInt("id_socio_proponente")));
+		socio.setTipoSocio(new Opcion (rs.getInt("id_tipo_socio")));
+		return socio;
 	}
 
 	@Override
 	public Socio getById(int id) {
 		Connection c;
-		String select = "SELECT * FROM socio where NumeroSocio = ? ";
+		String select = "SELECT * FROM socios where id = ? ";
 		Socio s = null;
+		c = ConexionBD.getConexion();
 		try {
-			c = ConexionBD.getConexion();
+			
 			PreparedStatement ps = c.prepareStatement(select);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				s = new Socio();
-				/*
-				 * s.setNrosocio(rs.getInt("NumeroSocio")); s.setNombre(rs.getString("Nombre"));
-				 * s.setApellido(rs.getString("Apellido")); s.setCedula(rs.getString("Cedula"));
-				 * s.setCelular(rs.getString("Celular"));
-				 */
+				s = SetDatosSocios(rs);
+			   
 			}
 
 		} catch (Exception e) {
 			System.out.println("Fallo al ejecutar la query" + e.getMessage());
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
 
 		return s;
