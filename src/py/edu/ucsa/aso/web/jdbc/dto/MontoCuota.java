@@ -95,4 +95,13 @@ public class MontoCuota {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 
+	@Override
+	public String toString() {
+		return "MontoCuota [id=" + id + ", monto=" + monto + ", fechaCreacion=" + fechaCreacion + ", fechaIniVigencia="
+				+ fechaIniVigencia + ", fechaFinVigencia=" + fechaFinVigencia + ", fechaInactivacion="
+				+ fechaInactivacion + ", estado=" + estado + ", usuarioInactivacion=" + usuarioInactivacion
+				+ ", numeroCuota=" + numeroCuota + ", fechaVencimiento=" + fechaVencimiento + "]";
+	}
+	
+
 }

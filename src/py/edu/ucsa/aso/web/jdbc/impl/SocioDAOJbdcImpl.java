@@ -136,62 +136,87 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		c = ConexionBD.getConexion();
 		PreparedStatement ps;
 		try {
-			String sentenciaUpdate = ("UPDATE socios set nombres = ?, apellidos = ?, cedula = ?  WHERE id = ?");
+			String sentenciaUpdate = ("UPDATE socios set nombres = ?, apellidos = ?, email = ?, nro_socio = ?"
+					+ ", nro_cedula= ?, fecha_ingreso = ?, id_estado_actual = ?, fecha_estado_actual = ?, fundador = ?,"
+					+ "id_usuario_creacion = ?, fecha_creacion = ?, id_socio_proponente = ?, "
+					+ " id_tipo_socio = ?  WHERE id = ?");
 			ps = c.prepareStatement(sentenciaUpdate);
 			ps.setString(1, socio.getNombres());
 			ps.setString(2, socio.getApellidos());
-			//falta completar
-			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
-			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
-			System.out.println("REGISTROS ACTUALIZADOS: " + cant);
-			ps.close();
+			ps.setString(3, socio.getEmail());
+			ps.setInt(4, socio.getNroSocio());
+			ps.setInt(5, socio.getNroCedula());
+			ps.setTimestamp(6, Timestamp.valueOf(socio.getFechaIngreso()));
+			ps.setInt(7,socio.getEstadoActual().getId());
+			ps.setTimestamp(8, Timestamp.valueOf(socio.getFechaEstadoActual()));
+			ps.setBoolean(9, socio.isFundador());
+			ps.setInt(10, socio.getUsuarioCreacion().getId());
+			ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setInt(12, socio.getSocioPoponente().getId());
+			ps.setInt(13, socio.getTipoSocio().getId());
+			ps.setInt(14, socio.getId());
+			ps.executeUpdate(); 
 			c.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
-		return null;
+		return socio;
 	}
 
 	@Override
 	public void eliminar(int id) {
 
 		Connection c;
+		c = ConexionBD.getConexion();
 		try {
-			c = ConexionBD.getConexion();
-			PreparedStatement ps = c.prepareStatement(" DELETE  FROM socio  WHERE numerosocio = ?");
+			PreparedStatement ps = c.prepareStatement(" DELETE  FROM socios  WHERE id = ?");
 			ps.setInt(1, id);
-			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
-			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
+			int cant = ps.executeUpdate(); 
 			System.out.println("REGISTRO ELIMINADO: " + cant);
 			ps.close();
 			c.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
 
 	}
 
 	@Override
-	public Socio getSocioByNroCedula(String nroCedula) {
+	public Socio getSocioByNroCedula(int nroCedula) {
 		Connection c;
-		String select = "SELECT * FROM socio where Cedula = ? ";
+		c = ConexionBD.getConexion();
+		String select = "SELECT * FROM socios where nro_cedula = ? ";
 		Socio s = null;
 		try {
-			c = ConexionBD.getConexion();
 			PreparedStatement ps = c.prepareStatement(select);
-			ps.setString(1, nroCedula);
+			ps.setInt(1, nroCedula);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				s = new Socio();
-				/*
-				 * s.setNrosocio(rs.getInt("NumeroSocio")); s.setNombre(rs.getString("Nombre"));
-				 * s.setApellido(rs.getString("Apellido")); s.setCedula(rs.getString("Cedula"));
-				 * s.setCelular(rs.getString("Celular"));
-				 */
+				s.setId(rs.getInt("id"));
+				s.setNombres(rs.getString("nombres"));
+				s.setApellidos(rs.getString("apellidos"));
+				s.setEmail(rs.getString("email"));
+				s.setNroSocio(rs.getInt("nro_socio"));
+				s.setNroCedula(rs.getInt("nro_cedula"));
+				s.setFechaIngreso(rs.getTimestamp("fecha_ingreso").toLocalDateTime());
+				s.setEstadoActual(new Opcion(rs.getInt("id_estado_actual")));
+				s.setFechaEstadoActual(rs.getTimestamp("fecha_estado_actual").toLocalDateTime());
+				s.setFundador(rs.getBoolean("fundador"));
+				s.setUsuarioCreacion(new Usuario(rs.getInt("id_usuario_creacion")));
+				s.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+				s.setSocioPoponente(new Socio(rs.getInt("id_socio_proponente")));
+				s.setTipoSocio(new Opcion(rs.getInt("id_tipo_socio"))); 
 			}
 
 		} catch (Exception e) {
 			System.out.println("Fallo al ejecutar la query" + e.getMessage());
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
 
 		return s;

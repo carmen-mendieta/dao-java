@@ -89,16 +89,17 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 		c = ConexionBD.getConexion();
 		PreparedStatement ps;
 		try {
-			String sentenciaInsert = ("INSERT INTO montos_cuota "+ "( monto,fecha_creacion,fecha_inicio_vigencia,fecha_fin_vigencia,estado,fecha_inactivacion)"
+			String sentenciaInsert = ("INSERT INTO montos_cuota "+ "( monto,fecha_creacion,fecha_inicio_vigencia,"
+					+ "fecha_fin_vigencia,estado,fecha_inactivacion)"
 					+ " VALUES(?,?,?,?,?,?)");
-			ps = c.prepareStatement(sentenciaInsert);
+			ps = c.prepareStatement(sentenciaInsert,Statement.RETURN_GENERATED_KEYS);
 			ps.setDouble(1, montoc.getMonto());
 			ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
 			ps.setTimestamp(3, Timestamp.valueOf(montoc.getFechaIniVigencia()));
 			ps.setTimestamp(4, Timestamp.valueOf(montoc.getFechaFinVigencia()));
 			ps.setString(5, montoc.getEstado());
 			ps.setTimestamp(6, Timestamp.valueOf(montoc.getFechaInactivacion()));
-			ps.executeUpdate(sentenciaInsert,Statement.RETURN_GENERATED_KEYS); 
+			ps.executeUpdate(); 
 			ResultSet rs=ps.getGeneratedKeys();
 			if ( rs.next()) {
 				int clave = rs.getInt(1);
@@ -118,48 +119,86 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 	@Override
 	public MontoCuota modificar(MontoCuota mca) {
 		Connection c;
+		c = ConexionBD.getConexion();
+		PreparedStatement ps;
 		try {
-			c = ConexionBD.getConexion();
-			PreparedStatement ps = c.prepareStatement(
-					"UPDATE montocuota set monto = ?, numerocuota = ?,fechavencimiento= ?  WHERE idmontocuota = ?");
-			// ps.setInt(1, mca.getMontoCuota());
-			ps.setInt(2, mca.getNumeroCuota());
-			ps.setDate(3, mca.getFechaVencimiento());
-			ps.setInt(4, mca.getId());
-			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
-			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
-			System.out.println("REGISTROS ACTUALIZADOS: " + cant);
+	      String sentenciaUpdate=	("UPDATE montos_cuota set monto = ?, fecha_creacion = ?,"
+	    + " fecha_inicio_vigencia = ?,fecha_fin_vigencia = ?, estado = ?, fecha_inactivacion = ? "
+		+ " WHERE id = ?");
+			ps=c.prepareStatement(sentenciaUpdate);
+			ps.setDouble(1, mca.getMonto());
+			ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setTimestamp(3, Timestamp.valueOf(mca.getFechaIniVigencia()));
+			ps.setTimestamp(4, Timestamp.valueOf(mca.getFechaFinVigencia()));
+			ps.setString(5, mca.getEstado());
+			ps.setTimestamp(6, Timestamp.valueOf(mca.getFechaInactivacion()));
+			ps.setInt(7, mca.getId());
+			ps.executeUpdate(); 
 			ps.close();
-			c.close();
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
 
-		return null;
+		return mca;
 	}
 
 	@Override
 	public void eliminar(int id) {
 		Connection c;
+		c = ConexionBD.getConexion();
 		try {
-			c = ConexionBD.getConexion();
-			PreparedStatement ps = c.prepareStatement(" DELETE  FROM montocuota  WHERE idmontocuota = ?");
+			PreparedStatement ps = c.prepareStatement(" DELETE  FROM montos_cuota  WHERE id = ?");
 			ps.setInt(1, id);
-			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
-			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
+		    int cant= ps.executeUpdate(); 
 			System.out.println("REGISTRO ELIMINADO: " + cant);
 			ps.close();
-			c.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			ConexionBD.cerrarConexion(c);
 		}
 
 	}
 
 	@Override
 	public MontoCuota getMontoCuotaByMesAnho(int mes, int anho) {
-		// TODO Auto-generated method stub
+		
+		Connection c;
+		String select = "SELECT * FROM montos_cuota where"
+				+ " extract (month from fecha_creacion) = ? and  extract (year from fecha_creacion) = ?  ";
+		MontoCuota mt = null;
+		c = ConexionBD.getConexion();
+		try {
+			PreparedStatement ps = c.prepareStatement(select);
+			ps.setInt(1, mes);
+			ps.setInt(2, anho);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				mt = new MontoCuota();
+				mt.setId(rs.getInt("id"));
+				mt.setMonto(rs.getDouble("monto"));
+				mt.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+				mt.setFechaIniVigencia(rs.getTimestamp("fecha_inicio_vigencia").toLocalDateTime());
+				mt.setFechaFinVigencia(rs.getTimestamp("fecha_fin_vigencia").toLocalDateTime());
+				mt.setEstado(rs.getString("estado"));
+				mt.setFechaInactivacion(rs.getTimestamp("fecha_inactivacion").toLocalDateTime());
+				mt.setUsuarioInactivacion(new Usuario(rs.getInt("id_usuario_inactivacion")));
+				return mt;
+			}
+
+		} catch (Exception e) {
+			System.out.println("Fallo al ejecutar la query" + e.getMessage());
+		} finally {
+			ConexionBD.cerrarConexion(c);
+		}
+
 		return null;
+
 	}
 
+	
 }
