@@ -139,4 +139,15 @@ public class Socio {
 		this.tipoSocio = tipoSocio;
 	}
 
+	@Override
+	public String toString() {
+		return "Socio [id=" + id + ", nombres=" + nombres + ", apellidos=" + apellidos + ", email=" + email
+				+ ", nroSocio=" + nroSocio + ", nroCedula=" + nroCedula + ", fechaIngreso=" + fechaIngreso
+				+ ", estadoActual=" + estadoActual + ", fechaEstadoActual=" + fechaEstadoActual + ", fundador="
+				+ fundador + ", usuarioCreacion=" + usuarioCreacion + ", fechaCreacion=" + fechaCreacion
+				+ ", socioPoponente=" + socioPoponente + ", tipoSocio=" + tipoSocio + "]";
+	}
+	
+	
+
 }

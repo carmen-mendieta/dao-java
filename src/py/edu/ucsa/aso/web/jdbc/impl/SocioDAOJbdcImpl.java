@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 
 		} catch (SQLException e) {
 			System.out.println("Fallo al ejecutar la query " + e.getMessage());
-		}finally {
+		} finally {
 			ConexionBD.cerrarConexion(c);
 		}
 		return listaSocios;
@@ -51,13 +54,13 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		socio.setNroSocio(rs.getInt("nro_socio"));
 		socio.setNroCedula(rs.getInt("nro_cedula"));
 		socio.setFechaIngreso(rs.getTimestamp("fecha_ingreso").toLocalDateTime());
-		socio.setEstadoActual(new Opcion (rs.getInt("id_estado_actual")));
+		socio.setEstadoActual(new Opcion(rs.getInt("id_estado_actual")));
 		socio.setFechaEstadoActual(rs.getTimestamp("fecha_estado_actual").toLocalDateTime());
 		socio.setFundador(rs.getBoolean("fundador"));
 		socio.setUsuarioCreacion(new Usuario(rs.getInt("id_usuario_creacion")));
 		socio.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
 		socio.setSocioPoponente(new Socio(rs.getInt("id_socio_proponente")));
-		socio.setTipoSocio(new Opcion (rs.getInt("id_tipo_socio")));
+		socio.setTipoSocio(new Opcion(rs.getInt("id_tipo_socio")));
 		return socio;
 	}
 
@@ -68,18 +71,18 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		Socio s = null;
 		c = ConexionBD.getConexion();
 		try {
-			
+
 			PreparedStatement ps = c.prepareStatement(select);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				s = SetDatosSocios(rs);
-			   
+
 			}
 
 		} catch (Exception e) {
 			System.out.println("Fallo al ejecutar la query" + e.getMessage());
-		}finally {
+		} finally {
 			ConexionBD.cerrarConexion(c);
 		}
 
@@ -89,38 +92,55 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 	@Override
 	public Socio insertar(Socio socio) {
 		Connection c;
+		c = ConexionBD.getConexion();
+		PreparedStatement ps;
 		try {
-			c = ConexionBD.getConexion();
-			PreparedStatement ps = c.prepareStatement(
-					"INSERT INTO Socio " + "(NumeroSocio, Nombre, Apellido, Cedula, Celular)" + " VALUES(?,?,?,?,?)");
-			/*
-			 * ps.setInt(1, socio.getNrosocio()); ps.setString(2, socio.getNombre());
-			 * ps.setString(3, socio.getApellido()); ps.setString(4, socio.getCedula());
-			 * ps.setString(5, socio.getCelular());
-			 */
-			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
-			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
-			System.out.println("REGISTROS INSERTADOS: " + cant);
+			String sentenciaInsert = "INSERT INTO socios "
+					+ "(nombres, apellidos, email, nro_socio, nro_cedula, fecha_ingreso, "
+					+ "id_estado_actual, fecha_estado_actual, fundador, id_usuario_creacion, "
+					+ "fecha_creacion, id_socio_proponente, id_tipo_socio) " + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			ps = c.prepareStatement(sentenciaInsert,Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1, socio.getNombres());
+			ps.setString(2, socio.getApellidos());
+			ps.setString(3, socio.getEmail());
+			ps.setInt(4, socio.getNroSocio());
+			ps.setInt(5, socio.getNroCedula());
+			ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setInt(7, socio.getEstadoActual().getId());
+			ps.setTimestamp(8, Timestamp.valueOf(socio.getFechaEstadoActual()));
+			ps.setBoolean(9, socio.isFundador());
+			ps.setInt(10, socio.getUsuarioCreacion().getId());
+			ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setInt(12, socio.getSocioPoponente().getId());
+			ps.setInt(13, socio.getTipoSocio().getId());
+			ps.executeUpdate(); 
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				int clave = rs.getInt(1);
+				socio.setId(clave);
+				rs.close();
+			}
 			ps.close();
-			c.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			ConexionBD.cerrarConexion(c);
 		}
-		return null;
+		return socio;
 	}
 
 	@Override
 	public Socio modificar(Socio socio) {
 		Connection c;
+		c = ConexionBD.getConexion();
+		PreparedStatement ps;
 		try {
-			c = ConexionBD.getConexion();
-			PreparedStatement ps = c.prepareStatement(
-					"UPDATE socio set nombre = ?, apellido = ?, cedula = ?, celular = ?  WHERE numerosocio = ?");
-			/*
-			 * ps.setString(1, socio.getNombre()); ps.setString(2, socio.getApellido());
-			 * ps.setString(3, socio.getCedula()); ps.setString(4, socio.getCelular());
-			 * ps.setInt(5, socio.getNrosocio());
-			 */
+			String sentenciaUpdate = ("UPDATE socios set nombres = ?, apellidos = ?, cedula = ?  WHERE id = ?");
+			ps = c.prepareStatement(sentenciaUpdate);
+			ps.setString(1, socio.getNombres());
+			ps.setString(2, socio.getApellidos());
+			//falta completar
 			int cant = ps.executeUpdate(); // devuelve la cantidad de registros afectados, cuando es insert siempre es 1
 			// ParameterMetaData parameterMetaData = ps.getParameterMetaData();
 			System.out.println("REGISTROS ACTUALIZADOS: " + cant);

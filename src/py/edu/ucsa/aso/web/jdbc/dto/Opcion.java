@@ -62,4 +62,11 @@ public class Opcion {
 		this.opcionPadre = opcionPadre;
 	}
 
+	@Override
+	public String toString() {
+		return "Opcion [id=" + id + ", codigo=" + codigo + ", descripcion=" + descripcion + ", estado=" + estado
+				+ ", dominio=" + dominio + ", opcionPadre=" + opcionPadre + "]";
+	}
+
+	
 }
