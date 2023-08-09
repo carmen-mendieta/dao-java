@@ -50,9 +50,9 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 		m.setMonto(rs.getDouble("monto"));
 		m.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
 		m.setFechaIniVigencia(rs.getTimestamp("fecha_inicio_vigencia").toLocalDateTime());
-		m.setFechaFinVigencia(rs.getTimestamp("fecha_fin_vigencia").toLocalDateTime());
+	    m.setFechaFinVigencia((rs.getTimestamp("fecha_fin_vigencia") != null ?  rs.getTimestamp("fecha_fin_vigencia").toLocalDateTime() : null));
 		m.setEstado(rs.getString("estado"));
-		m.setFechaInactivacion(rs.getTimestamp("fecha_inactivacion").toLocalDateTime());
+	    m.setFechaInactivacion((rs.getTimestamp("fecha_inactivacion") != null ?  rs.getTimestamp("fecha_inactivacion").toLocalDateTime() : null));
 		m.setUsuarioInactivacion(new Usuario(rs.getInt("id_usuario_inactivacion")));
 		return m;
 	}
@@ -98,7 +98,7 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 			ps.setTimestamp(3, Timestamp.valueOf(montoc.getFechaIniVigencia()));
 			ps.setTimestamp(4, Timestamp.valueOf(montoc.getFechaFinVigencia()));
 			ps.setString(5, montoc.getEstado());
-			ps.setTimestamp(6, Timestamp.valueOf(montoc.getFechaInactivacion()));
+		    ps.setTimestamp(6,(montoc.getFechaInactivacion() != null) ? Timestamp.valueOf(montoc.getFechaInactivacion()) : null);
 			ps.executeUpdate(); 
 			ResultSet rs=ps.getGeneratedKeys();
 			if ( rs.next()) {
@@ -123,7 +123,7 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 		PreparedStatement ps;
 		try {
 	      String sentenciaUpdate=	("UPDATE montos_cuota set monto = ?, fecha_creacion = ?,"
-	    + " fecha_inicio_vigencia = ?,fecha_fin_vigencia = ?, estado = ?, fecha_inactivacion = ? "
+	    + " fecha_inicio_vigencia = ?,fecha_fin_vigencia = ?, estado = ?, fecha_inactivacion = ? , id_usuario_inactivacion = ? "
 		+ " WHERE id = ?");
 			ps=c.prepareStatement(sentenciaUpdate);
 			ps.setDouble(1, mca.getMonto());
@@ -132,7 +132,8 @@ public class MontoCuotaDAOImpl implements MontoCuotaDAO {
 			ps.setTimestamp(4, Timestamp.valueOf(mca.getFechaFinVigencia()));
 			ps.setString(5, mca.getEstado());
 			ps.setTimestamp(6, Timestamp.valueOf(mca.getFechaInactivacion()));
-			ps.setInt(7, mca.getId());
+			ps.setInt(7, mca.getUsuarioInactivacion().getId());
+			ps.setInt(8, mca.getId());
 			ps.executeUpdate(); 
 			ps.close();
 		
