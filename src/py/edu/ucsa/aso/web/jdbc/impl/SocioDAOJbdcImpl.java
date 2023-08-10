@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import py.edu.aso.web.conexion.ConexionBD;
 import py.edu.ucsa.aso.web.jdbc.dao.SocioDAO;
@@ -17,20 +19,22 @@ import py.edu.ucsa.aso.web.jdbc.dto.Socio;
 import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class SocioDAOJbdcImpl implements SocioDAO {
+	private final String QUERY_BASE=" select s.*, e.codigo cod_estado, e.descripcion desc_estado,"
+			+ "			ts.codigo cod_tipo_socio, ts.descripcion desc_tipo_socio"
+			+ "			from socios s join opciones e on s.id_estado_actual = e.id "
+			+ "			join opciones ts on s.id_tipo_socio= ts. id  ";
 
 	@Override
 	public List<Socio> listar() {
 		Connection c;
 		List<Socio> listaSocios = new ArrayList<>();
-		String select = "SELECT * FROM socios order by nombres asc ";
+		String select =  QUERY_BASE  + " order by nombres asc ";
 		c = ConexionBD.getConexion();
 		try {
 
 			ResultSet rs = c.createStatement().executeQuery(select);
-			Socio socio = null;
 			while (rs.next()) {
-				socio = SetDatosSocios(rs);
-				listaSocios.add(socio);
+				listaSocios.add(SetDatosSocios(rs));
 
 			}
 			c.close();
@@ -54,20 +58,28 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		socio.setNroSocio(rs.getInt("nro_socio"));
 		socio.setNroCedula(rs.getInt("nro_cedula"));
 		socio.setFechaIngreso(rs.getTimestamp("fecha_ingreso").toLocalDateTime());
-		socio.setEstadoActual(new Opcion(rs.getInt("id_estado_actual")));
+		
+		Opcion estado= new Opcion();
+		estado.setId(rs.getInt("id_estado_actual"));
+		estado.setCodigo(rs.getString("cod_estado"));
+		estado.setDescripcion(rs.getString("desc_estado"));
+		socio.setEstadoActual(estado);
+		
 		socio.setFechaEstadoActual(rs.getTimestamp("fecha_estado_actual").toLocalDateTime());
 		socio.setFundador(rs.getBoolean("fundador"));
 		socio.setUsuarioCreacion(new Usuario(rs.getInt("id_usuario_creacion")));
 		socio.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
 		socio.setSocioPoponente(new Socio(rs.getInt("id_socio_proponente")));
-		socio.setTipoSocio(new Opcion(rs.getInt("id_tipo_socio")));
+		socio.setTipoSocio(new Opcion(rs.getInt("id_tipo_socio"),
+				rs.getString("cod_tipo_socio"),
+			    rs.getString("desc_tipo_socio")));
 		return socio;
 	}
 
 	@Override
 	public Socio getById(int id) {
 		Connection c;
-		String select = "SELECT * FROM socios where id = ? ";
+		String select =  QUERY_BASE + " where s.id = ? ";
 		Socio s = null;
 		c = ConexionBD.getConexion();
 		try {
@@ -95,6 +107,7 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		c = ConexionBD.getConexion();
 		PreparedStatement ps;
 		try {
+			c.setAutoCommit(false);
 			String sentenciaInsert = "INSERT INTO socios "
 					+ "(nombres, apellidos, email, nro_socio, nro_cedula, fecha_ingreso, "
 					+ "id_estado_actual, fecha_estado_actual, fundador, id_usuario_creacion, "
@@ -111,7 +124,11 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 			ps.setBoolean(9, socio.isFundador());
 			ps.setInt(10, socio.getUsuarioCreacion().getId());
 			ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
-			ps.setInt(12, socio.getSocioPoponente().getId());
+			if(Objects.nonNull(socio.getSocioPoponente()))
+				ps.setInt(12, socio.getSocioPoponente().getId());
+			else
+				ps.setNull(12, Types.INTEGER);
+			
 			ps.setInt(13, socio.getTipoSocio().getId());
 			ps.executeUpdate(); 
 			ResultSet rs = ps.getGeneratedKeys();
@@ -121,9 +138,35 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 				rs.close();
 			}
 			ps.close();
+			String subSelectEstado = "(SELECT e.id "
+					+ "FROM opciones e "
+					+ "JOIN dominios d "
+						+ "ON e.id_dominio = d.id "
+					+ "WHERE d.codigo = 'ESTSOC' "
+						+ "AND e.codigo = 'PEN')";
+			sentenciaInsert = "INSERT INTO estados_socios("
+					+ "	id_socio ,id_estado, fecha_estado, "
+					+ " id_usuario_creacion, fecha_creacion, observacion) "
+					+ "	VALUES (?," +subSelectEstado+ ", ?, ?, ?, ?)";
+			ps = c.prepareStatement(sentenciaInsert);
+			ps.setInt(1, socio.getId());
+			//ps.setTimestamp(2, Timestamp.valueOf(socio.getFechaEstadoActual()));
+			ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setInt(3, socio.getUsuarioCreacion().getId());
+			ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setString(5, "SE DA DE ALTTA COMO SOCIO ");
+			ps.executeUpdate();	
+			ps.close();
+			c.commit();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+		     System.out.println(e.getMessage());
+			try {
+				c.rollback();
+			} catch (SQLException e1) {
+			   System.out.println("ERROR AL HACER ROLLBACK: "+e1.getMessage());
+				e1.printStackTrace();
+			}
 		} finally {
 			ConexionBD.cerrarConexion(c);
 		}
@@ -189,28 +232,14 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 	public Socio getSocioByNroCedula(int nroCedula) {
 		Connection c;
 		c = ConexionBD.getConexion();
-		String select = "SELECT * FROM socios where nro_cedula = ? ";
+		String select =  QUERY_BASE   + " where nro_cedula = ? ";
 		Socio s = null;
 		try {
 			PreparedStatement ps = c.prepareStatement(select);
 			ps.setInt(1, nroCedula);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				s = new Socio();
-				s.setId(rs.getInt("id"));
-				s.setNombres(rs.getString("nombres"));
-				s.setApellidos(rs.getString("apellidos"));
-				s.setEmail(rs.getString("email"));
-				s.setNroSocio(rs.getInt("nro_socio"));
-				s.setNroCedula(rs.getInt("nro_cedula"));
-				s.setFechaIngreso(rs.getTimestamp("fecha_ingreso").toLocalDateTime());
-				s.setEstadoActual(new Opcion(rs.getInt("id_estado_actual")));
-				s.setFechaEstadoActual(rs.getTimestamp("fecha_estado_actual").toLocalDateTime());
-				s.setFundador(rs.getBoolean("fundador"));
-				s.setUsuarioCreacion(new Usuario(rs.getInt("id_usuario_creacion")));
-				s.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
-				s.setSocioPoponente(new Socio(rs.getInt("id_socio_proponente")));
-				s.setTipoSocio(new Opcion(rs.getInt("id_tipo_socio"))); 
+				s = SetDatosSocios(rs);
 			}
 
 		} catch (Exception e) {

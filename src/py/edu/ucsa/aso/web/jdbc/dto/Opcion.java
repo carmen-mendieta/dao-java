@@ -7,11 +7,21 @@ public class Opcion {
 	private String estado;
 	private Dominio dominio;
 	private Opcion opcionPadre;
-	
 
+	public Opcion() {
+		super();
+	}
+	
 	public Opcion(Integer id) {
 		super();
 		this.id = id;
+	}
+
+	public Opcion(Integer id, String codigo, String descripcion) {
+		super();
+		this.id = id;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
 	}
 
 	public Integer getId() {
@@ -68,5 +78,4 @@ public class Opcion {
 				+ ", dominio=" + dominio + ", opcionPadre=" + opcionPadre + "]";
 	}
 
-	
 }
