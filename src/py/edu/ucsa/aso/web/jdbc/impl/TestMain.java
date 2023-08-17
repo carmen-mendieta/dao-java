@@ -28,12 +28,12 @@ public class TestMain {
 		  
 		  Socio socio = new Socio();
 		  socio.setNombres("Julia");
-		  socio.setApellidos("Ramirez");
+		  socio.setApellidos("Rojas");
 		  socio.setEmail("email");
-		  socio.setNroSocio(56985); 
-		  socio.setNroCedula(89542);
+		  socio.setNroSocio(56954); 
+		  socio.setNroCedula(8954);
 		  socio.setFechaIngreso(LocalDateTime.now());
-		  socio.setEstadoActual(new Opcion(5));
+		  socio.setEstadoActual(new Opcion(6));
 		  socio.setFechaEstadoActual(LocalDateTime.now());
 		  socio.setFundador(true);
 		  socio.setUsuarioCreacion(new Usuario(1));
@@ -41,7 +41,8 @@ public class TestMain {
 		  socio.setSocioPoponente(new
 		  Socio(1));
 		  socio.setTipoSocio(new Opcion(1));
-		  DAOFactory.getSocioDAO().insertar(socio);
+		  socio.setId(14);
+		  DAOFactory.getSocioDAO().modificar(socio);
 	
 
 		/*
@@ -52,7 +53,8 @@ public class TestMain {
 		  Opcion(1)); sociom.setFechaEstadoActual(LocalDateTime.now());
 		  sociom.setFundador(true); sociom.setUsuarioCreacion(new Usuario(1));
 		  sociom.setFechaCreacion(LocalDateTime.now()); sociom.setSocioPoponente(new
-		  Socio(1)); sociom.setTipoSocio(new Opcion(1)); sociom.setId(1);
+		  Socio(1)); sociom.setTipoSocio(new Opcion(1));
+		   sociom.setId(1);
 		  DAOFactory.getSocioDAO().modificar(sociom);
 		 
 
