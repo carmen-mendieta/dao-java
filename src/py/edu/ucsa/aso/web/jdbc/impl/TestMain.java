@@ -8,15 +8,18 @@ import py.edu.ucsa.aso.web.jdbc.dao.DAOFactory;
 import py.edu.ucsa.aso.web.jdbc.dto.MontoCuota;
 import py.edu.ucsa.aso.web.jdbc.dto.Opcion;
 import py.edu.ucsa.aso.web.jdbc.dto.Socio;
+import py.edu.ucsa.aso.web.jdbc.dto.TiposMovimiento;
 import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class TestMain {
 	public static void main(String[] args) {
 
 		
-		 //List<Socio> listaSocios = DAOFactory.getSocioDAO().listar();
+		 List<TiposMovimiento> listamovimientos = DAOFactory.getTiposMovimientoDAO().listar();
 		  
-		  //for (Socio socio : listaSocios) { System.out.println(socio); }
+		  for (TiposMovimiento tipomovimiento : listamovimientos) {
+			  System.out.println(tipomovimiento);
+			  }
 			/*
 			 * Socio socioById = DAOFactory.getSocioDAO().getById(3);
 			 * System.out.println(socioById);
@@ -26,24 +29,24 @@ public class TestMain {
 		  // Socio socioById = DAOFactory.getSocioDAO().getById(1);
 		  
 		  
-		  Socio socio = new Socio();
-		  socio.setNombres("Julia");
-		  socio.setApellidos("Rojas");
-		  socio.setEmail("email");
-		  socio.setNroSocio(56954); 
-		  socio.setNroCedula(8954);
-		  socio.setFechaIngreso(LocalDateTime.now());
-		  socio.setEstadoActual(new Opcion(6));
-		  socio.setFechaEstadoActual(LocalDateTime.now());
-		  socio.setFundador(true);
-		  socio.setUsuarioCreacion(new Usuario(1));
-		  socio.setFechaCreacion(LocalDateTime.now());
-		  socio.setSocioPoponente(new
-		  Socio(1));
-		  socio.setTipoSocio(new Opcion(1));
-		  socio.setId(14);
-		  DAOFactory.getSocioDAO().modificar(socio);
-	
+//		  Socio socio = new Socio();
+//		  socio.setNombres("Julia");
+//		  socio.setApellidos("Rojas");
+//		  socio.setEmail("email");
+//		  socio.setNroSocio(56954); 
+//		  socio.setNroCedula(8954);
+//		  socio.setFechaIngreso(LocalDateTime.now());
+//		  socio.setEstadoActual(new Opcion(6));
+//		  socio.setFechaEstadoActual(LocalDateTime.now());
+//		  socio.setFundador(true);
+//		  socio.setUsuarioCreacion(new Usuario(1));
+//		  socio.setFechaCreacion(LocalDateTime.now());
+//		  socio.setSocioPoponente(new
+//		  Socio(1));
+//		  socio.setTipoSocio(new Opcion(1));
+//		  socio.setId(14);
+//		  DAOFactory.getSocioDAO().modificar(socio);
+//	
 
 		/*
 		  Socio sociom = new Socio(); sociom.setNombres("Ariel");
