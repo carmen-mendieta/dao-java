@@ -6,6 +6,7 @@ import java.util.List;
 
 import py.edu.ucsa.aso.web.jdbc.dao.DAOFactory;
 import py.edu.ucsa.aso.web.jdbc.dto.MontoCuota;
+import py.edu.ucsa.aso.web.jdbc.dto.MovimientosSocios;
 import py.edu.ucsa.aso.web.jdbc.dto.Opcion;
 import py.edu.ucsa.aso.web.jdbc.dto.Socio;
 import py.edu.ucsa.aso.web.jdbc.dto.TiposMovimiento;
@@ -14,21 +15,50 @@ import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 public class TestMain {
 	public static void main(String[] args) {
 
+		//MovimientosSocios 
+		 List<MovimientosSocios> listamovimientossocios = DAOFactory.getMovimientosSociosDAO().listar();
+	  
+		  for (MovimientosSocios movimientoSocio : listamovimientossocios) {
+		  System.out.println(movimientoSocio);
+		  }
+
+
+//		  List<Socio> listasocios = DAOFactory.getSocioDAO().listar();
+//		  
+//		  for (Socio socio : listasocios) {
+//		  System.out.println(socio);
+//		  }
+//		
 		
-		 List<TiposMovimiento> listamovimientos = DAOFactory.getTiposMovimientoDAO().listar();
-		  
-		  for (TiposMovimiento tipomovimiento : listamovimientos) {
-			  System.out.println(tipomovimiento);
-			  }
-			/*
-			 * Socio socioById = DAOFactory.getSocioDAO().getById(3);
-			 * System.out.println(socioById);
-			 */
-		 
+		//TiposMovimientos 
+//		 List<TiposMovimiento> listamovimientos = DAOFactory.getTiposMovimientoDAO().listar();
+//		  
+//		  for (TiposMovimiento tipomovimiento : listamovimientos) {
+//			  System.out.println(tipomovimiento);
+//			  }
 		
-		  // Socio socioById = DAOFactory.getSocioDAO().getById(1);
-		  
-		  
+//		TiposMovimiento tipoById = DAOFactory.getTiposMovimientoDAO().getById(2);
+//			 System.out.println(tipoById);
+//			
+//          TiposMovimiento tipomovimiento = new TiposMovimiento();
+//          tipomovimiento.setCodigo("PAGOCS");
+//          tipomovimiento.setDescripcion("PAGO CUOTA SOCIAL");
+//          tipomovimiento.setEstado("A");
+//          tipomovimiento.setTipoDebCred("DEB");
+//          DAOFactory.getTiposMovimientoDAO().insertar(tipomovimiento);
+//		  
+		
+//        TiposMovimiento tipomovimiento = new TiposMovimiento(); 
+//        tipomovimiento.setCodigo("PAGODA");
+//        tipomovimiento.setDescripcion("PAGO DE DEVOLUCION POR APORTE");
+//        tipomovimiento.setEstado("A");
+//        tipomovimiento.setTipoDebCred("CRE");
+//        tipomovimiento.setId(4);
+//         DAOFactory.getTiposMovimientoDAO().modificar(tipomovimiento);	
+		
+	//	DAOFactory.getTiposMovimientoDAO().eliminar(5);
+	
+		///Socios 	
 //		  Socio socio = new Socio();
 //		  socio.setNombres("Julia");
 //		  socio.setApellidos("Rojas");

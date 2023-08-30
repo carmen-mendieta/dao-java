@@ -11,10 +11,16 @@ public class Opcion {
 	public Opcion() {
 		super();
 	}
-	
+
 	public Opcion(Integer id) {
 		super();
 		this.id = id;
+	}
+
+	public Opcion(Integer id, String descripcion) {
+		super();
+		this.id = id;
+		this.descripcion = descripcion;
 	}
 
 	public Opcion(Integer id, String codigo, String descripcion) {

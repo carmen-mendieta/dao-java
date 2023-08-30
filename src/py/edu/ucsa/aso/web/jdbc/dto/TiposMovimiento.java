@@ -7,6 +7,15 @@ public class TiposMovimiento {
 	private String estado;
 	private String tipoDebCred;
 
+	public TiposMovimiento() {
+		super();
+	}
+
+	public TiposMovimiento(int id) {
+		super();
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -52,7 +61,5 @@ public class TiposMovimiento {
 		return "TiposMovimiento [id=" + id + ", codigo=" + codigo + ", descripcion=" + descripcion + ", estado="
 				+ estado + ", tipoDebCred=" + tipoDebCred + "]";
 	}
-	
-	
 
 }

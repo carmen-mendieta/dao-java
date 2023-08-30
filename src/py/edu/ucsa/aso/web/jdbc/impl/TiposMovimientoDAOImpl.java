@@ -51,7 +51,7 @@ public class TiposMovimientoDAOImpl implements TiposMovimientoDAO {
 	@Override
 	public TiposMovimiento getById(int id) {
 		Connection c = ConexionBD.getConexion();
-		String select = "SELECT id, codigo, descripcion, estado, tipo_deb_cred" + "FROM tipos_movimiento where id=?;";
+		String select = "SELECT *  FROM tipos_movimiento where id=?;";
 		TiposMovimiento tipom = null;
 		try {
 			PreparedStatement ps = c.prepareStatement(select);
@@ -77,16 +77,14 @@ public class TiposMovimientoDAOImpl implements TiposMovimientoDAO {
 		Connection c = ConexionBD.getConexion();
 		PreparedStatement ps;
 		try {
-			String setenciaInsert = "INSERT INTO tipos_movimiento(" + "	id, codigo, descripcion, estado, tipo_deb_cred)"
-					+ "	VALUES (?, ?, ?, ?, ?); ";
+			String setenciaInsert = "INSERT INTO tipos_movimiento(" + " codigo, descripcion, estado, tipo_deb_cred)"
+					+ "	VALUES (?, ?, ?, ?); ";
 			ps = c.prepareStatement(setenciaInsert, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, tiposmovimiento.getCodigo());
 			ps.setString(2, tiposmovimiento.getDescripcion());
 			ps.setString(3, tiposmovimiento.getEstado());
 			ps.setString(4, tiposmovimiento.getTipoDebCred());
-			
-			ps.executeQuery();
-
+			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				int clave = rs.getInt(1);
@@ -97,7 +95,7 @@ public class TiposMovimientoDAOImpl implements TiposMovimientoDAO {
 		} catch (Exception e) {
 			System.out.println("ERROR AL INSERTAR: " + e.getMessage());
 		} finally {
-			ConexionBD.getConexionMySQL();
+			ConexionBD.cerrarConexion(c);
 		}
 
 		return tiposmovimiento;
@@ -108,28 +106,40 @@ public class TiposMovimientoDAOImpl implements TiposMovimientoDAO {
 		Connection c = ConexionBD.getConexion();
 		PreparedStatement ps;
 		try {
-			String setenciaUpdate="UPDATE tipos_movimiento"
-					+ "	SET codigo=?, descripcion=?, estado=?, tipo_deb_cred=?"
-					+ "	WHERE id=?;";
-			ps=c.prepareStatement(setenciaUpdate);
+			String setenciaUpdate = "UPDATE tipos_movimiento"
+					+ "	SET codigo=?, descripcion=?, estado=?, tipo_deb_cred=?" + "	WHERE id=?;";
+			ps = c.prepareStatement(setenciaUpdate);
 			ps.setString(1, tipomov.getCodigo());
 			ps.setString(2, tipomov.getDescripcion());
 			ps.setString(3, tipomov.getEstado());
 			ps.setString(4, tipomov.getTipoDebCred());
-			ps.setInt(5,tipomov.getId());
-			ps.executeQuery();
-			
+			ps.setInt(5, tipomov.getId());
+			int cant = ps.executeUpdate();
+			System.out.println("Registro modificado: " + cant);
 			ps.close();
-			} catch (Exception e) {
-				System.out.println("ERROR AL MODIFICAR: " + e.getMessage());
+		} catch (Exception e) {
+			System.out.println("ERROR AL MODIFICAR: " + e.getMessage());
 		}
 		return tipomov;
 	}
 
 	@Override
 	public void eliminar(int id) {
-		// TODO Auto-generated method stub
+		Connection c = ConexionBD.getConexion();
+		try {
+			PreparedStatement ps = c.prepareStatement("DELETE FROM tipos_movimiento Where id=?");
+			ps.setInt(1, id);
+			int cant = ps.executeUpdate();
+			System.out.println("REGISTRO ELIMINADO: " + cant);
+			ps.close();
+			c.close();
 
+		} catch (Exception e) {
+			System.out.println("NO SE ELIMINO REGISTRO: " + e.getMessage());
+
+		} finally {
+			ConexionBD.cerrarConexion(c);
+		}
 	}
 
 }
