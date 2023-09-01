@@ -14,14 +14,19 @@ import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class TestMain {
 	public static void main(String[] args) {
+        //Opcion
+		List<Opcion> listaopciones = DAOFactory.getOpcionDAO().listar();
 
-		//MovimientosSocios 
-		 List<MovimientosSocios> listamovimientossocios = DAOFactory.getMovimientosSociosDAO().listar();
-	  
-		  for (MovimientosSocios movimientoSocio : listamovimientossocios) {
-		  System.out.println(movimientoSocio);
-		  }
+		for (Opcion opcion : listaopciones) {
+			System.out.println(opcion);
+		}
 
+		// MovimientosSocios
+//		 List<MovimientosSocios> listamovimientossocios = DAOFactory.getMovimientosSociosDAO().listar();
+//	  
+//		  for (MovimientosSocios movimientoSocio : listamovimientossocios) {
+//		  System.out.println(movimientoSocio);
+//		  }
 
 //		  List<Socio> listasocios = DAOFactory.getSocioDAO().listar();
 //		  
@@ -29,14 +34,14 @@ public class TestMain {
 //		  System.out.println(socio);
 //		  }
 //		
-		
-		//TiposMovimientos 
+
+		// TiposMovimientos
 //		 List<TiposMovimiento> listamovimientos = DAOFactory.getTiposMovimientoDAO().listar();
 //		  
 //		  for (TiposMovimiento tipomovimiento : listamovimientos) {
 //			  System.out.println(tipomovimiento);
 //			  }
-		
+
 //		TiposMovimiento tipoById = DAOFactory.getTiposMovimientoDAO().getById(2);
 //			 System.out.println(tipoById);
 //			
@@ -47,7 +52,7 @@ public class TestMain {
 //          tipomovimiento.setTipoDebCred("DEB");
 //          DAOFactory.getTiposMovimientoDAO().insertar(tipomovimiento);
 //		  
-		
+
 //        TiposMovimiento tipomovimiento = new TiposMovimiento(); 
 //        tipomovimiento.setCodigo("PAGODA");
 //        tipomovimiento.setDescripcion("PAGO DE DEVOLUCION POR APORTE");
@@ -55,10 +60,10 @@ public class TestMain {
 //        tipomovimiento.setTipoDebCred("CRE");
 //        tipomovimiento.setId(4);
 //         DAOFactory.getTiposMovimientoDAO().modificar(tipomovimiento);	
-		
-	//	DAOFactory.getTiposMovimientoDAO().eliminar(5);
-	
-		///Socios 	
+
+		// DAOFactory.getTiposMovimientoDAO().eliminar(5);
+
+		/// Socios
 //		  Socio socio = new Socio();
 //		  socio.setNombres("Julia");
 //		  socio.setApellidos("Rojas");
@@ -79,37 +84,35 @@ public class TestMain {
 //	
 
 		/*
-		  Socio sociom = new Socio(); sociom.setNombres("Ariel");
-		  sociom.setApellidos("Ayala"); sociom.setEmail("ariel@gmail");
-		  sociom.setNroSocio(154727); sociom.setNroCedula(4845813);
-		  sociom.setFechaIngreso(LocalDateTime.now()); sociom.setEstadoActual(new
-		  Opcion(1)); sociom.setFechaEstadoActual(LocalDateTime.now());
-		  sociom.setFundador(true); sociom.setUsuarioCreacion(new Usuario(1));
-		  sociom.setFechaCreacion(LocalDateTime.now()); sociom.setSocioPoponente(new
-		  Socio(1)); sociom.setTipoSocio(new Opcion(1));
-		   sociom.setId(1);
-		  DAOFactory.getSocioDAO().modificar(sociom);
-		 
+		 * Socio sociom = new Socio(); sociom.setNombres("Ariel");
+		 * sociom.setApellidos("Ayala"); sociom.setEmail("ariel@gmail");
+		 * sociom.setNroSocio(154727); sociom.setNroCedula(4845813);
+		 * sociom.setFechaIngreso(LocalDateTime.now()); sociom.setEstadoActual(new
+		 * Opcion(1)); sociom.setFechaEstadoActual(LocalDateTime.now());
+		 * sociom.setFundador(true); sociom.setUsuarioCreacion(new Usuario(1));
+		 * sociom.setFechaCreacion(LocalDateTime.now()); sociom.setSocioPoponente(new
+		 * Socio(1)); sociom.setTipoSocio(new Opcion(1)); sociom.setId(1);
+		 * DAOFactory.getSocioDAO().modificar(sociom);
+		 * 
+		 * 
+		 * // DAOFactory.getSocioDAO().eliminar(3);
+		 * 
+		 * // Socio sociod=DAOFactory.getSocioDAO().getSocioByNroCedula(12355); //
+		 * System.out.println(sociod);
+		 * 
+		 * 
+		 * /*Montos cuotas
+		 */
 
-		// DAOFactory.getSocioDAO().eliminar(3);
-
-		// Socio sociod=DAOFactory.getSocioDAO().getSocioByNroCedula(12355);
-		// System.out.println(sociod);
-		
-
-		/*Montos cuotas*/
-		
-		
-		 // List<MontoCuota> listaMontosc = DAOFactory.getMontoCuotaDAO().listar(); for
+		// List<MontoCuota> listaMontosc = DAOFactory.getMontoCuotaDAO().listar(); for
 		// (MontoCuota monto : listaMontosc) { System.out.println(monto); }
-		 
 
 		/*
 		 * MontoCuota montoc = DAOFactory.getMontoCuotaDAO().getById(2);
 		 * System.out.println(montoc);
 		 */
-		
-		// tanto para insertar y modificar 
+
+		// tanto para insertar y modificar
 		/*
 		 * MontoCuota mc= new MontoCuota(); mc.setMonto(10000);
 		 * mc.setFechaCreacion(LocalDateTime.now());
@@ -119,17 +122,15 @@ public class TestMain {
 		 * 0, 0)); mc.setUsuarioInactivacion(new Usuario(1)); mc.setId(5);
 		 * DAOFactory.getMontoCuotaDAO().modificar(mc);
 		 */
-		  
-	     //	DAOFactory.getMontoCuotaDAO().eliminar(8);
-		 
-		
-			/*
-			 * MontoCuota montocuota=
-			 * DAOFactory.getMontoCuotaDAO().getMontoCuotaByMesAnho(04, 2016);
-			 * System.out.println(montocuota);
-			 */
 
-		
+		// DAOFactory.getMontoCuotaDAO().eliminar(8);
+
+		/*
+		 * MontoCuota montocuota=
+		 * DAOFactory.getMontoCuotaDAO().getMontoCuotaByMesAnho(04, 2016);
+		 * System.out.println(montocuota);
+		 */
+
 	}
 
 }

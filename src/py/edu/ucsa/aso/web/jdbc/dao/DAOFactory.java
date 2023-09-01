@@ -2,6 +2,7 @@ package py.edu.ucsa.aso.web.jdbc.dao;
 
 import py.edu.ucsa.aso.web.jdbc.impl.MontoCuotaDAOImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.MovimientosSociosDAOImpl;
+import py.edu.ucsa.aso.web.jdbc.impl.OpcionDAOJdbcImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.SocioDAOJbdcImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.TiposMovimientoDAOImpl;
 
@@ -22,4 +23,7 @@ public abstract class DAOFactory {
 		return new MovimientosSociosDAOImpl();
 	}
 
+	public static OpcionDAO getOpcionDAO() {
+		return new OpcionDAOJdbcImpl();
+	}
 }
