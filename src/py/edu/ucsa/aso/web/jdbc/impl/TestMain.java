@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import py.edu.ucsa.aso.web.jdbc.dao.DAOFactory;
+import py.edu.ucsa.aso.web.jdbc.dto.Dominio;
 import py.edu.ucsa.aso.web.jdbc.dto.MontoCuota;
 import py.edu.ucsa.aso.web.jdbc.dto.MovimientosSocios;
 import py.edu.ucsa.aso.web.jdbc.dto.Opcion;
@@ -14,12 +15,23 @@ import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class TestMain {
 	public static void main(String[] args) {
-        //Opcion
-		List<Opcion> listaopciones = DAOFactory.getOpcionDAO().listar();
+		// Opcion
+//		List<Opcion> listaopciones = DAOFactory.getOpcionDAO().listar();
+//
+//		for (Opcion opcion : listaopciones) {
+//			System.out.println(opcion);
+//		}
 
-		for (Opcion opcion : listaopciones) {
-			System.out.println(opcion);
-		}
+//		Opcion opcionById = DAOFactory.getOpcionDAO().getById(2);
+//	       System.out.println(opcionById);
+
+		Opcion opcion = new Opcion();
+		opcion.setDominio(new Dominio(1));
+		opcion.setCodigo("ITA");
+		opcion.setDescripcion("ITA");
+		opcion.setEstado("A");
+		opcion.setOpcionPadre(new Opcion(1));
+		DAOFactory.getOpcionDAO().insertar(opcion);
 
 		// MovimientosSocios
 //		 List<MovimientosSocios> listamovimientossocios = DAOFactory.getMovimientosSociosDAO().listar();

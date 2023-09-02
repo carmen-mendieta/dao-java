@@ -7,6 +7,17 @@ public class Dominio {
 	private String estado;
 	private Dominio dominioPadre;
 
+	
+	
+	public Dominio() {
+		super();
+	}
+
+	public Dominio(Integer id) {
+		super();
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -45,6 +56,12 @@ public class Dominio {
 
 	public void setDominioPadre(Dominio dominioPadre) {
 		this.dominioPadre = dominioPadre;
+	}
+
+	@Override
+	public String toString() {
+		return "Dominio [id=" + id + ", codigo=" + codigo + ", descripcion=" + descripcion + ", estado=" + estado
+				+ ", dominioPadre=" + dominioPadre + "]";
 	}
 
 }

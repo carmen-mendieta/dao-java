@@ -51,17 +51,17 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 		Connection c = ConexionBD.getConexion();
 		PreparedStatement s;
 		try {
-			String selectStmt = QueryBase + "where  o.id= ? ";
+			String selectStmt = QueryBase + "where  o.id = ? ";
 			s = c.prepareStatement(selectStmt);
 			s.setInt(1, id);
-			ResultSet rs = s.executeQuery(selectStmt);
+			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				opcion = setDatosOpcionFromDB(rs);
 			}
 			rs.close();
 			s.close();
 		} catch (Exception e) {
-			System.out.println("Error al generar la lista " + e.getMessage());
+			System.out.println("Error al buscar por ById " + e.getMessage());
 		} finally {
 			ConexionBD.cerrarConexion(c);
 		}
