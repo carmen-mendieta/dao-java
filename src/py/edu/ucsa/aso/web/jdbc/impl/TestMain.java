@@ -27,11 +27,12 @@ public class TestMain {
 
 		Opcion opcion = new Opcion();
 		opcion.setDominio(new Dominio(1));
-		opcion.setCodigo("ITA");
-		opcion.setDescripcion("ITA");
-		opcion.setEstado("A");
+		opcion.setCodigo("YAG");
+		opcion.setDescripcion("YAGUARON");
+		opcion.setEstado("I");
 		opcion.setOpcionPadre(new Opcion(1));
-		DAOFactory.getOpcionDAO().insertar(opcion);
+		opcion.setId(62);
+		DAOFactory.getOpcionDAO().modificar(opcion);
 
 		// MovimientosSocios
 //		 List<MovimientosSocios> listamovimientossocios = DAOFactory.getMovimientosSociosDAO().listar();

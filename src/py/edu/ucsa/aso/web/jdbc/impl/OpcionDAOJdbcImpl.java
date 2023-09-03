@@ -75,9 +75,10 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 		PreparedStatement ps;
 		try {
 			String setenciaInsert = "insert into opciones (codigo, descripcion, estado, "
-					+ "id_dominio, id_opcion_padre) values(?,?,?;?,?)";
+					+ "id_dominio, id_opcion_padre) values(?,?,?,?,?)";
 			ps = c.prepareStatement(setenciaInsert, Statement.RETURN_GENERATED_KEYS);
 			SetValoresParaGuardar(opcion, ps);
+			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				int clave = rs.getInt(1);
@@ -88,7 +89,7 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 		} catch (Exception e) {
 			System.out.println("ERROR AL INSERTAR: " + e.getMessage());
 		} finally {
-			ConexionBD.getConexion();
+			ConexionBD.cerrarConexion(c);
 		}
 		return opcion;
 	}
@@ -98,8 +99,13 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 		Connection c = ConexionBD.getConexion();
 		PreparedStatement ps;
 		try {
-			String sentenciaUpdate = "update opciones set codigo = ?, descripcion = ?, estado = ?"
-					+ "id_dominio = ?, id_opcion-padre = ? where id= ?";
+			String sentenciaUpdate = "update "
+											+ "opciones set codigo = ?, "
+											+ "descripcion = ?, "
+											+ "estado = ?, "
+											+ "id_dominio = ?, "
+											+ "id_opcion_padre = ? "
+										+ "where id= ?";
 			ps = c.prepareStatement(sentenciaUpdate);
 			SetValoresParaGuardar(opcion, ps);
 			ps.setInt(6, opcion.getId());
@@ -109,7 +115,7 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 		} catch (Exception e) {
 			System.out.println("ERROR AL MODIFICAR: " + e.getMessage());
 		} finally {
-			ConexionBD.getConexion();
+			ConexionBD.cerrarConexion(c);
 		}
 		return opcion;
 	}
