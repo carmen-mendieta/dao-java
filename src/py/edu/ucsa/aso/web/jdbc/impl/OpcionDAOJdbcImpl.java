@@ -159,7 +159,7 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 			s = c.prepareStatement(selectStmt);
 			s.setString(1, codDominio);
 			s.setString(2, codOpcion);
-			ResultSet rs = s.executeQuery(selectStmt);
+			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				opcion = setDatosOpcionFromDB(rs);
 			}
@@ -206,7 +206,7 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 			String selectStmt = QueryBase + "where d.codigo= ? order by descripcion asc";
 			s = c.prepareStatement(selectStmt);
 			s.setString(1, codDominio);
-			ResultSet rs = s.executeQuery(selectStmt);
+			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				opciones.add(setDatosOpcionFromDB(rs));
 			}

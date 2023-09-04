@@ -25,14 +25,26 @@ public class TestMain {
 //		Opcion opcionById = DAOFactory.getOpcionDAO().getById(2);
 //	       System.out.println(opcionById);
 
-		Opcion opcion = new Opcion();
-		opcion.setDominio(new Dominio(1));
-		opcion.setCodigo("YAG");
-		opcion.setDescripcion("YAGUARON");
-		opcion.setEstado("I");
-		opcion.setOpcionPadre(new Opcion(1));
-		opcion.setId(62);
-		DAOFactory.getOpcionDAO().modificar(opcion);
+//		Opcion opcion = new Opcion();
+//		opcion.setDominio(new Dominio(1));
+//		opcion.setCodigo("ARGEN");
+//		opcion.setDescripcion("PALERMO");
+//		opcion.setEstado("I");
+//		opcion.setOpcionPadre(new Opcion(2));
+//		opcion.setId(65);
+//		DAOFactory.getOpcionDAO().modificar(opcion);
+		
+	//	DAOFactory.getOpcionDAO().eliminar(64);
+		
+//		Opcion opcionByDominioCodOpcion = DAOFactory.getOpcionDAO().getOpcionByDominioCodOpcion("PAIS", "PAR");
+//       System.out.println(opcionByDominioCodOpcion);
+//		
+//		List<Opcion> listaOpcionesByCodDominio = DAOFactory.getOpcionDAO().getOpcionesByCodDominio("CIUD");
+//		 //  System.out.println(listaOpcionesByCodDominio);
+//			for (Opcion listaCoddominio : listaOpcionesByCodDominio) {
+//			System.out.println(listaCoddominio);
+//			}
+		
 
 		// MovimientosSocios
 //		 List<MovimientosSocios> listamovimientossocios = DAOFactory.getMovimientosSociosDAO().listar();
@@ -40,6 +52,10 @@ public class TestMain {
 //		  for (MovimientosSocios movimientoSocio : listamovimientossocios) {
 //		  System.out.println(movimientoSocio);
 //		  }
+		
+		MovimientosSocios movimientosByid = DAOFactory.getMovimientosSociosDAO().getById(61);
+       System.out.println(movimientosByid);
+		
 
 //		  List<Socio> listasocios = DAOFactory.getSocioDAO().listar();
 //		  
