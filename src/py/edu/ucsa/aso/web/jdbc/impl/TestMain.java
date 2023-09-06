@@ -53,15 +53,22 @@ public class TestMain {
 //		  System.out.println(movimientoSocio);
 //		  }
 		
-		MovimientosSocios movimientosByid = DAOFactory.getMovimientosSociosDAO().getById(61);
-       System.out.println(movimientosByid);
+//		MovimientosSocios movimientosByid = DAOFactory.getMovimientosSociosDAO().getById(61);
+//       System.out.println(movimientosByid);
 		
-
-//		  List<Socio> listasocios = DAOFactory.getSocioDAO().listar();
-//		  
-//		  for (Socio socio : listasocios) {
-//		  System.out.println(socio);
-//		  }
+		MovimientosSocios ms= new MovimientosSocios();
+		ms.setFechaPago(LocalDateTime.now());
+		ms.setMonto(450000);
+		ms.setConcepto(new Opcion(20));
+		ms.setEstado(new Opcion(24));
+		ms.setMedioPago(new Opcion(20));
+		ms.setSocio(new Socio(2));
+		ms.setTipoMovimiento(new TiposMovimiento(1));
+		ms.setUsuarioAprobacion(new Usuario(1));
+		ms.setUsuarioCreacion(new Usuario(1));
+		ms.setId(82);
+      DAOFactory.getMovimientosSociosDAO().modificar(ms);
+//
 //		
 
 		// TiposMovimientos

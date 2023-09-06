@@ -97,7 +97,7 @@ public class MovimientosSociosDAOImpl implements MovimientosSociosDAO {
 		try {
 			String setenciaInsert = "insert into movimientos_socios (fecha_pago, monto, id_concepto, "
 					+ "id_estado, id_medio_pago, id_socio, id_tipo_movimiento, "
-					+ "id_usuario_aprobacion, id_usuario_aprobacion) " + "values(?,?,?,?,?,?,?,?,?)";
+					+ "id_usuario_aprobacion, id_usuario_creacion) " + "values(?,?,?,?,?,?,?,?,?)";
 			ps = c.prepareStatement(setenciaInsert, Statement.RETURN_GENERATED_KEYS);
 			ps.setTimestamp(1, Timestamp.valueOf(movimiento.getFechaPago()));
 			ps.setInt(2, movimiento.getMonto());
@@ -125,14 +125,50 @@ public class MovimientosSociosDAOImpl implements MovimientosSociosDAO {
 	}
 
 	@Override
-	public MovimientosSocios modificar(MovimientosSocios objeto) {
-		// TODO Auto-generated method stub
-		return null;
+	public MovimientosSocios modificar(MovimientosSocios movimientos) {
+		Connection c = ConexionBD.getConexion();
+		PreparedStatement ps;
+		try {
+			String setenciaUpdate = (" update movimientos_socios set fecha_pago = ?, monto = ?, id_concepto = ?, "
+					+ "id_estado = ?, id_medio_pago = ?, id_socio = ?, id_tipo_movimiento = ?, "
+					+ "id_usuario_aprobacion = ?, id_usuario_creacion = ? where id = ? ");
+
+			ps = c.prepareStatement(setenciaUpdate);
+			ps.setTimestamp(1, Timestamp.valueOf(movimientos.getFechaPago()));
+			ps.setInt(2, movimientos.getMonto());
+			ps.setInt(3, movimientos.getConcepto().getId());
+			ps.setInt(4, movimientos.getEstado().getId());
+			ps.setInt(5, movimientos.getMedioPago().getId());
+			ps.setInt(6, movimientos.getSocio().getId());
+			ps.setInt(7, movimientos.getTipoMovimiento().getId());
+			ps.setInt(8, movimientos.getUsuarioAprobacion().getId());
+			ps.setInt(9, movimientos.getUsuarioCreacion().getId());
+			ps.setInt(10, movimientos.getId());
+			ps.executeUpdate();
+
+			ps.close();
+		} catch (Exception e) {
+			System.out.println("ERROR AL MODIFICAR: " + e.getMessage());
+		} finally {
+			ConexionBD.cerrarConexion(c);
+		}
+		return movimientos;
 	}
 
 	@Override
 	public void eliminar(int id) {
-		// TODO Auto-generated method stub
+		Connection c = ConexionBD.getConexion();
+
+		try {
+			PreparedStatement ps = c.prepareStatement("DELETE FROM movimientos_socios Where id = ? ");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+			ps.close();
+			int cant = ps.executeUpdate();
+			System.out.println("REGISTRO ELIMINADO: " + cant);
+		} catch (Exception e) {
+			System.out.println("ERROR AL ELIMINAR " + e.getMessage());
+		}
 
 	}
 
