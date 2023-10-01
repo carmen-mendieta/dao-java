@@ -5,6 +5,7 @@ import py.edu.ucsa.aso.web.jdbc.impl.MovimientosSociosDAOImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.OpcionDAOJdbcImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.SocioDAOJbdcImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.TiposMovimientoDAOImpl;
+import py.edu.ucsa.aso.web.jdbc.impl.UsuarioDAOImpl;
 
 public abstract class DAOFactory {
 	public static SocioDAO getSocioDAO() {
@@ -25,5 +26,12 @@ public abstract class DAOFactory {
 
 	public static OpcionDAO getOpcionDAO() {
 		return new OpcionDAOJdbcImpl();
+
 	}
+
+	public static UsuarioDAO getUsuarioDAO() {
+		return new UsuarioDAOImpl();
+
+	}
+
 }

@@ -96,7 +96,9 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + "]";
+		return "Usuario [id=" + id + ", usuario=" + usuario + ", email=" + email + ", habilitado=" + habilitado
+				+ ", cuentaBloqueada=" + cuentaBloqueada + ", cuentaExpirada=" + cuentaExpirada
+				+ ", fechaCreacionUsuario=" + fechaCreacionUsuario + ", socio=" + socio + "]";
 	}
 
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import py.edu.ucsa.aso.web.jdbc.dao.DAOFactory;
+import py.edu.ucsa.aso.web.jdbc.dao.UsuarioDAO;
 import py.edu.ucsa.aso.web.jdbc.dto.Dominio;
 import py.edu.ucsa.aso.web.jdbc.dto.MontoCuota;
 import py.edu.ucsa.aso.web.jdbc.dto.MovimientosSocios;
@@ -15,11 +16,14 @@ import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class TestMain {
 	public static void main(String[] args) {
+	    Usuario us=DAOFactory.getUsuarioDAO().Autenticar("maria", "maria12345");
+	     System.out.println(us);
+
 		// Opcion
-//		List<Opcion> listaopciones = DAOFactory.getOpcionDAO().listar();
+//  	List<Opcion> listaopciones = DAOFactory.getOpcionDAO().listar();
 //
 //		for (Opcion opcion : listaopciones) {
-//			System.out.println(opcion);
+//		System.out.println(opcion);
 //		}
 
 //		Opcion opcionById = DAOFactory.getOpcionDAO().getById(2);
@@ -56,18 +60,18 @@ public class TestMain {
 //		MovimientosSocios movimientosByid = DAOFactory.getMovimientosSociosDAO().getById(61);
 //       System.out.println(movimientosByid);
 		
-		MovimientosSocios ms= new MovimientosSocios();
-		ms.setFechaPago(LocalDateTime.now());
-		ms.setMonto(450000);
-		ms.setConcepto(new Opcion(20));
-		ms.setEstado(new Opcion(24));
-		ms.setMedioPago(new Opcion(20));
-		ms.setSocio(new Socio(2));
-		ms.setTipoMovimiento(new TiposMovimiento(1));
-		ms.setUsuarioAprobacion(new Usuario(1));
-		ms.setUsuarioCreacion(new Usuario(1));
-		ms.setId(82);
-      DAOFactory.getMovimientosSociosDAO().modificar(ms);
+//		MovimientosSocios ms= new MovimientosSocios();
+//		ms.setFechaPago(LocalDateTime.now());
+//		ms.setMonto(450000);
+//		ms.setConcepto(new Opcion(20));
+//		ms.setEstado(new Opcion(24));
+//		ms.setMedioPago(new Opcion(20));
+//		ms.setSocio(new Socio(2));
+//		ms.setTipoMovimiento(new TiposMovimiento(1));
+//		ms.setUsuarioAprobacion(new Usuario(1));
+//		ms.setUsuarioCreacion(new Usuario(1));
+//		ms.setId(82);
+//      DAOFactory.getMovimientosSociosDAO().modificar(ms);
 //
 //		
 
