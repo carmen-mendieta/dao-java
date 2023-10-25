@@ -1,8 +1,10 @@
 package py.edu.ucsa.aso.web.jdbc.dao;
 
+import py.edu.ucsa.aso.web.jdbc.impl.DominioDAOImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.MontoCuotaDAOImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.MovimientosSociosDAOImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.OpcionDAOJdbcImpl;
+import py.edu.ucsa.aso.web.jdbc.impl.PagoCuotaDAOImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.SocioDAOJbdcImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.TiposMovimientoDAOImpl;
 import py.edu.ucsa.aso.web.jdbc.impl.UsuarioDAOImpl;
@@ -32,6 +34,14 @@ public abstract class DAOFactory {
 	public static UsuarioDAO getUsuarioDAO() {
 		return new UsuarioDAOImpl();
 
+	}
+	
+	public static DominioDAO getDominioDAO() {
+		return new DominioDAOImpl();
+	}
+	
+	public static PagoCuotaDAO getPagoCuotaDAO() {
+		return new PagoCuotaDAOImpl();
 	}
 
 }
