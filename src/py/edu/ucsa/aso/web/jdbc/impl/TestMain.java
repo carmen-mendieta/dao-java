@@ -13,11 +13,36 @@ import py.edu.ucsa.aso.web.jdbc.dto.Opcion;
 import py.edu.ucsa.aso.web.jdbc.dto.Socio;
 import py.edu.ucsa.aso.web.jdbc.dto.TiposMovimiento;
 import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
-
+import py.edu.ucsa.aso.web.jdbc.dto.PagosCuotaSocios;
 public class TestMain {
 	public static void main(String[] args) {
-	    Usuario us=DAOFactory.getUsuarioDAO().Autenticar("maria", "maria12345");
-	     System.out.println(us);
+		/*
+		 * Usuario us=DAOFactory.getUsuarioDAO().Autenticar("maria", "maria12345");
+		 * System.out.println(us);
+		 */
+	     
+			// Opcion
+			
+//		 List<PagosCuotaSocios> listapagos = DAOFactory.getPagoCuotaDAO().listar();
+//		  for (PagosCuotaSocios pago : listapagos) {
+//			  System.out.println(pago); 
+//		  }
+		  
+//		  List<MovimientosSocios> listamovimiento = DAOFactory.getMovimientosSociosDAO().listar();
+//		  for (MovimientosSocios mo : listamovimiento) {
+//			  System.out.println(mo); 
+//		  }
+		 	
+			/*
+			 * PagosCuotaSocios ms= new PagosCuotaSocios(); ms.setAnhoCuota(2020);
+			 * ms.setExonerado(true); ms.setFechaCreacion(LocalDateTime.now());
+			 * ms.setMesCuota(7); ms.setMontoCuota(240000); ms.setEstado(new Opcion(4));
+			 * ms.setMotivoExoneracion(new Opcion(2)); ms.setMovimientoSocio(new
+			 * MovimientosSocios(61)); ms.setSocio(new Socio(1)); ms.setUsuarioCreacion(new
+			 * Usuario(1)); DAOFactory.getPagoCuotaDAO().insertar(ms);
+			 */
+  	
+  	
 
 		// Opcion
 //  	List<Opcion> listaopciones = DAOFactory.getOpcionDAO().listar();

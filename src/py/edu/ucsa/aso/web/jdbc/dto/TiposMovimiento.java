@@ -11,6 +11,11 @@ public class TiposMovimiento {
 		super();
 	}
 
+	public TiposMovimiento(String descripcion) {
+		super();
+		this.descripcion = descripcion;
+	}
+
 	public TiposMovimiento(int id) {
 		super();
 		this.id = id;

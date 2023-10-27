@@ -108,4 +108,14 @@ public class PagosCuotaSocios {
 		this.usuarioCreacion = usuarioCreacion;
 	}
 
+	@Override
+	public String toString() {
+		return "PagosCuotaSocios [id=" + id + ", anhoCuota=" + anhoCuota + ", exonerado=" + exonerado
+				+ ", fechaCreacion=" + fechaCreacion + ", mesCuota=" + mesCuota + ", montoCuota=" + montoCuota
+				+ ", estado=" + estado + ", motivoExoneracion=" + motivoExoneracion + ", movimientoSocio="
+				+ movimientoSocio + ", socio=" + socio + ", usuarioCreacion=" + usuarioCreacion + "]";
+	}
+	
+	
+
 }

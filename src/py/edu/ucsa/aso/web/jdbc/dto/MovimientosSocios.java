@@ -18,10 +18,17 @@ public class MovimientosSocios {
 		super();
 	}
 
-	public MovimientosSocios(int id) {
+	
+
+	public MovimientosSocios(Integer id, TiposMovimiento tipoMovimiento) {
 		super();
 		this.id = id;
+		this.tipoMovimiento = tipoMovimiento;
 	}
+
+
+
+
 
 	public int getId() {
 		return id;
