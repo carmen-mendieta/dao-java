@@ -34,6 +34,14 @@ public class Socio {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+
+	public Socio(Integer id, String nombres, String apellidos) {
+		super();
+		this.id = id;
+		this.nombres = nombres;
+		this.apellidos = apellidos;
+	}
 
 	public String getNombres() {
 		return nombres;
