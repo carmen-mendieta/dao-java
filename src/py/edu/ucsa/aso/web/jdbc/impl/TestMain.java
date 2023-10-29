@@ -2,6 +2,7 @@ package py.edu.ucsa.aso.web.jdbc.impl;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import py.edu.ucsa.aso.web.jdbc.dao.DAOFactory;
@@ -22,12 +23,21 @@ public class TestMain {
 		 */
 	     
 			// Opcion
-			
-//		 List<PagosCuotaSocios> listapagos = DAOFactory.getPagoCuotaDAO().listar();
-//		  for (PagosCuotaSocios pago : listapagos) {
-//			  System.out.println(pago); 
-//		  }
-		  
+//			List<PagosCuotaSocios> listapagos = DAOFactory.getPagoCuotaDAO().listar(); 
+//			for (PagosCuotaSocios pago :listapagos) { 
+//				System.out.println(pago); 
+//			}
+//	
+//			  List<String> codigos = Arrays.asList("COMED", "PAGC", "CENANIV");
+//			
+//			  List<Opcion> listaConceptos = DAOFactory.getOpcionDAO().getOpcionesByCodOpciones(codigos);
+//			  
+//		        for (Opcion opcion : listaConceptos) {
+//		            System.out.println(opcion.toString());}
+		        
+		        System.out.println(DAOFactory.getPagoCuotaDAO().getUltimoMesAnhoCuotaPagada(1));
+		        
+			 	  
 //		  List<MovimientosSocios> listamovimiento = DAOFactory.getMovimientosSociosDAO().listar();
 //		  for (MovimientosSocios mo : listamovimiento) {
 //			  System.out.println(mo); 

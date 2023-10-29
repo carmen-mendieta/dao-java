@@ -135,4 +135,32 @@ public class PagoCuotaDAOImpl implements PagoCuotaDAO {
 		
 	}
 
+	@Override
+	public String getUltimoMesAnhoCuotaPagada(int idSocio) {
+		String querySelect = "select *,concat(cast(round(mes_cuota) as integer), '-', cast(round(anho_cuota) as integer)) as mes_anho_cuota "
+                + "from pagos_cuotas_socios "
+                + "where id_socio = ? ;";
+
+		Connection c;
+		c = ConexionBD.getConexion();
+		try {
+			PreparedStatement ps = c.prepareStatement(querySelect);
+			ps.setInt(1, idSocio);
+			
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+			    return rs.getString("mes_anho_cuota");
+			}
+			c.close();
+			rs.close();
+
+		} catch (SQLException e) {
+			System.out.println("Fallo al ejecutar la query " + e.getMessage());
+		}finally {
+			ConexionBD.cerrarConexion(c);
+		}
+		
+		return null;
+	}
+
 }
