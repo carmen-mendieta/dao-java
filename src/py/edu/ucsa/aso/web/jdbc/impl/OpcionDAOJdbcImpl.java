@@ -221,38 +221,4 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 		return opciones;
 	}
 
-	@Override
-	public List<Opcion> getOpcionesByCodOpciones(List<String> opcionesParams) {
-		
-		
-		StringBuilder opcionesBuilder = new StringBuilder();
-		 for (String elemento : opcionesParams) {
-		        opcionesBuilder.append("'").append(elemento).append("',");
-		    }
-
-		    if (opcionesBuilder.length() > 0) {
-		        opcionesBuilder.deleteCharAt(opcionesBuilder.length() - 1);
-		    }
-		List<Opcion> opciones = new ArrayList<>();
-		Connection c = ConexionBD.getConexion();
-		PreparedStatement s;
-		try {
-			String selectStmt = QueryBase + " where o.codigo in (" + opcionesBuilder.toString() + ") order by descripcion asc";
-			s = c.prepareStatement(selectStmt);
-		  //  s.setString(1, opcionesBuilder.toString());
-			ResultSet rs = s.executeQuery();
-			while (rs.next()) {
-				opciones.add(setDatosOpcionFromDB(rs));
-			}
-			rs.close();
-			s.close();
-		} catch (Exception e) {
-			System.out.println("Error al generar la lista " + e.getMessage());
-		} finally {
-			ConexionBD.cerrarConexion(c);
-		}
-
-		return opciones;
-	}
-
 }

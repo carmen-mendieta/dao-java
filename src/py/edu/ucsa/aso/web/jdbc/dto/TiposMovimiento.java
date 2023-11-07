@@ -10,6 +10,15 @@ public class TiposMovimiento {
 	public TiposMovimiento() {
 		super();
 	}
+	
+
+	public TiposMovimiento(int id, String codigo, String descripcion) {
+		super();
+		this.id = id;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+	}
+
 
 	public TiposMovimiento(String descripcion) {
 		super();

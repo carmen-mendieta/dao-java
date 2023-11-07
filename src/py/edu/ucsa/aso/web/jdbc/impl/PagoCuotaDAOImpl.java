@@ -23,7 +23,7 @@ import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 public class PagoCuotaDAOImpl implements PagoCuotaDAO {
 	
 	private final String QUERY_BASE = "SELECT ps.*, e.codigo AS cod_estado, e.descripcion AS desc_estado, " +
-		    "tp.codigo AS codigotipo, tp.descripcion AS tipodescripcion, " +
+		    "tp.codigo AS codigo_tipo, tp.descripcion AS descripcion_tipo, " +
 		    "s.nombres AS nombres_socio, s.apellidos AS apellidos_socio  " +
 		    "FROM pagos_cuotas_socios ps " +
 		    "JOIN opciones e ON ps.id_estado = e.id " +
@@ -70,9 +70,13 @@ public class PagoCuotaDAOImpl implements PagoCuotaDAO {
 		p.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
 		p.setMesCuota(rs.getInt("mes_cuota")); 
 		p.setMontoCuota(rs.getInt("monto_cuota"));  
-		p.setEstado(new Opcion(rs.getInt("id_estado"),rs.getString("desc_estado"))); 
+		p.setEstado(new Opcion(rs.getInt("id_estado"),rs.getString("cod_estado"),rs.getString("desc_estado"))); 
+		if(rs.getInt("id_motivo_exoneracion")!=0) {
 		p.setMotivoExoneracion(new Opcion(rs.getInt("id_motivo_exoneracion")));  
-		TiposMovimiento tipoMovimientoObjeto = new TiposMovimiento(rs.getString("tipodescripcion"));
+		}
+		
+		TiposMovimiento tipoMovimientoObjeto = new TiposMovimiento(rs.getInt("id")
+				,rs.getString("codigo_tipo"),rs.getString("descripcion_tipo"));
 		p.setMovimientoSocio(new MovimientosSocios(rs.getInt("id_movimiento_socio"),tipoMovimientoObjeto));  
 		p.setSocio(new Socio(rs.getInt("id_socio"),rs.getString("nombres_socio"),rs.getString("apellidos_socio")));  
 		p.setUsuarioCreacion(new Usuario(rs.getInt("id_usuario_creacion")));

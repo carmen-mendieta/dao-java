@@ -69,7 +69,9 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		socio.setFundador(rs.getBoolean("fundador"));
 		socio.setUsuarioCreacion(new Usuario(rs.getInt("id_usuario_creacion")));
 		socio.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+		if(rs.getInt("id_socio_proponente")!=0) {
 		socio.setSocioPoponente(new Socio(rs.getInt("id_socio_proponente")));
+		} 
 		socio.setTipoSocio(new Opcion(rs.getInt("id_tipo_socio"), rs.getString("cod_tipo_socio"),
 				rs.getString("desc_tipo_socio")));
 		return socio;
