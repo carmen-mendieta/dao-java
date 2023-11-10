@@ -221,4 +221,10 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 		return opciones;
 	}
 
+	@Override
+	public List<Opcion> getOpcionesByIDDominio(int parseInt) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
