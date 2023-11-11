@@ -29,13 +29,13 @@ public class TestMain {
 //			}
 //	
 //			  List<String> codigos = Arrays.asList("COMED", "PAGC", "CENANIV");
-//			
-//			  List<Opcion> listaConceptos = DAOFactory.getOpcionDAO().getOpcionesByCodOpciones(codigos);
+////			
+//			  List<Opcion> listaiddominios = DAOFactory.getOpcionDAO().getOpcionesByIDDominio(2);
 //			  
-//		        for (Opcion opcion : listaConceptos) {
+//		        for (Opcion opcion : listaiddominios) {
 //		            System.out.println(opcion.toString());}
 		        
-		        System.out.println(DAOFactory.getPagoCuotaDAO().getUltimoMesAnhoCuotaPagada(1));
+		    //    System.out.println(DAOFactory.getPagoCuotaDAO().getUltimoMesAnhoCuotaPagada(1));
 		        
 			 	  
 //		  List<MovimientosSocios> listamovimiento = DAOFactory.getMovimientosSociosDAO().listar();
@@ -61,8 +61,11 @@ public class TestMain {
 //		System.out.println(opcion);
 //		}
 
-//		Opcion opcionById = DAOFactory.getOpcionDAO().getById(2);
-//	       System.out.println(opcionById);
+		/*
+		 * Opcion opcionById = (Opcion)
+		 * DAOFactory.getOpcionDAO().getOpcionesByIDDominio(2);
+		 * System.out.println(opcionById);
+		 */
 
 //		Opcion opcion = new Opcion();
 //		opcion.setDominio(new Dominio(1));

@@ -222,9 +222,30 @@ public class OpcionDAOJdbcImpl implements OpcionDAO {
 	}
 
 	@Override
-	public List<Opcion> getOpcionesByIDDominio(int parseInt) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Opcion> getOpcionesByIDDominio(int idDominio) {
+		List<Opcion> opciones = new ArrayList<>();
+		Connection c = ConexionBD.getConexion();
+		PreparedStatement s;
+		try {
+			String selectStmt = QueryBase + "where d.id= ? order by descripcion asc";
+			s = c.prepareStatement(selectStmt);
+			s.setInt(1, idDominio);
+			ResultSet rs = s.executeQuery();
+			while (rs.next()) {
+				opciones.add(setDatosOpcionFromDB(rs));
+			}
+			rs.close();
+			s.close();
+		} catch (Exception e) {
+			System.out.println("Error al generar la lista " + e.getMessage());
+		} finally {
+			ConexionBD.cerrarConexion(c);
+		}
+
+		return opciones;
+		
+		
+		
 	}
 
 }

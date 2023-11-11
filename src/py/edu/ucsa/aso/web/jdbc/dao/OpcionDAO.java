@@ -9,6 +9,6 @@ public interface OpcionDAO extends GenericDAO<Opcion> {
 
 	List<Opcion> getOpcionesByCodDominio(String dominio);
 
-	List<Opcion> getOpcionesByIDDominio(int parseInt);
+	List<Opcion> getOpcionesByIDDominio(int idDominio);
 	
 }
