@@ -281,4 +281,85 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		return s;
 	}
 
+	@Override
+	public String suspenderSocio(int idSocio, String observacion, int idUsuario) {
+		Connection c;
+		c = ConexionBD.getConexion();
+		String selectCantidades = "select count(*) as Cantidad, es.id_estado "
+									+ "from estados_socios es "
+									+ "inner join opciones o "
+									+ "	on es.id_estado = o.id "
+									+ "where o.codigo = 'SUS' "
+									+ "and id_socio = ? "
+									+ "group by es.id_estado";
+		int cantidadSuspenciones = 0;
+		int idEstadoSocio = 0;
+		String setenciaInsert;
+		try {
+			c.setAutoCommit(false);
+			PreparedStatement ps = c.prepareStatement(selectCantidades);
+			ps.setInt(1, idSocio);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				cantidadSuspenciones = rs.getInt("Cantidad");
+				idEstadoSocio = rs.getInt("id_estado");
+			}
+			
+			if(cantidadSuspenciones == 2) {
+				idEstadoSocio = GetIdEstadoSocioByCodigo("EXP");
+			}
+			
+			LocalDateTime fechaEstadoActual = LocalDateTime.now();
+			setenciaInsert="INSERT INTO estados_socios(" 
+					+ "	id_socio ,id_estado, fecha_estado, "
+								+ " id_usuario_creacion, observacion) " +
+					    "	VALUES (? ,?, ?, ?, ?)";
+						ps=c.prepareStatement(setenciaInsert);
+						ps.setInt(1, idSocio);
+						ps.setInt(2, idEstadoSocio);
+						ps.setTimestamp(3, Timestamp.valueOf(fechaEstadoActual));
+						ps.setInt(4, idUsuario);
+						ps.setString(5, observacion );
+						ps.executeUpdate();
+					     
+			
+		  String sentenciaUpdate = ("UPDATE socios set id_estado_actual = ?, fecha_estado_actual = ?  WHERE id = ?");
+			ps=c.prepareStatement(sentenciaUpdate);
+			ps.setInt(1, idEstadoSocio);
+			ps.setTimestamp(2, Timestamp.valueOf(fechaEstadoActual));
+			ps.setInt(3, idSocio);
+			ps.executeUpdate();
+			ps.close();
+			c.commit();
+			
+		} catch (Exception e) {
+			System.out.println("Fallo al ejecutar la query" + e.getMessage());
+		} finally {
+			ConexionBD.cerrarConexion(c);
+		}
+		
+		return null;
+	}
+	
+	private int GetIdEstadoSocioByCodigo(String codigo) {
+		Connection c;
+		c = ConexionBD.getConexion();
+		String selectCodigoExpulsion = "Select * from opciones where codigo = ?";
+		int idEstado = 0;
+		try {
+			PreparedStatement ps = c.prepareStatement(selectCodigoExpulsion);
+			ps.setString(1, codigo);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				idEstado = rs.getInt("id");
+			}
+		} catch (Exception e) {
+			System.out.println("Fallo al ejecutar la query" + e.getMessage());
+		} finally {
+			ConexionBD.cerrarConexion(c);
+		}
+		
+		return idEstado;
+	}
+
 }

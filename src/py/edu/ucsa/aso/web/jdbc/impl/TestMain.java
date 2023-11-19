@@ -17,6 +17,8 @@ import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 import py.edu.ucsa.aso.web.jdbc.dto.PagosCuotaSocios;
 public class TestMain {
 	public static void main(String[] args) {
+		DAOFactory.getSocioDAO().suspenderSocio(14,"Atraso de Cuota", 3);
+		
 		/*
 		 * Usuario us=DAOFactory.getUsuarioDAO().Autenticar("maria", "maria12345");
 		 * System.out.println(us);
