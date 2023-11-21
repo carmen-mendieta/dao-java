@@ -14,7 +14,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			+ "FROM usuarios ";
 
 	@Override
-	public Usuario Autenticar(String usuario, String clave) {
+	public Usuario autenticar(String usuario, String clave) {
 		Connection c;
 		String select = QUERY_BASE + " where usuario= ? and clave= ? "
 				+ "and habilitado=true and cuenta_bloqueada=false and cuenta_expirada=false";
@@ -42,6 +42,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		}
 
 		return us;
+	}
+
+	@Override
+	public Usuario getRolesByUsuario(int id) {
+	
+		return null;
 	}
 
 }

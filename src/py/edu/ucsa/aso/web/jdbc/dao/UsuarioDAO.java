@@ -4,7 +4,9 @@ import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public interface UsuarioDAO {
 	
- Usuario Autenticar(String usuario,String clave);
+ Usuario autenticar(String usuario,String clave);
+ Usuario getRolesByUsuario(int id);
+ 
 	 
 
 }
