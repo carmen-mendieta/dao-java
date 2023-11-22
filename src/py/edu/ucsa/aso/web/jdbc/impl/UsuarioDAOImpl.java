@@ -3,9 +3,13 @@ package py.edu.ucsa.aso.web.jdbc.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import py.edu.aso.web.conexion.ConexionBD;
 import py.edu.ucsa.aso.web.jdbc.dao.UsuarioDAO;
+import py.edu.ucsa.aso.web.jdbc.dto.Opcion;
+import py.edu.ucsa.aso.web.jdbc.dto.Rol;
 import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
@@ -45,9 +49,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public Usuario getRolesByUsuario(int id) {
-	
+	public List<Rol> getRolesByUsuario(int idUsuario) {
+		List<Rol> roles = new ArrayList<>();
+		Connection c = ConexionBD.getConexion();
+		PreparedStatement s;
+		/*
+		 * String selectStmt=select r.*, r.nombre_rol as nombre_rol, ru.id_usuario as
+		 * usuario_id from roles r inner join roles_usuarios ru on ru.id_rol= r.id where
+		 * id_usuario=5
+		 */
 		return null;
 	}
+
+	
 
 }
