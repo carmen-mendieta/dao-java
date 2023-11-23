@@ -385,6 +385,82 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		return idEstado;
 	}
 
+	@Override
+	public List<Socio> getListadoSocios(String filtro) {
+		Connection c;
+		c = ConexionBD.getConexion();
+		String queryConsulta = "";
+		String queryActivosNoAlDia = "select "
+									+ "s.id,"
+									+ "s.nombres,"
+									+ "s.apellidos,"
+									+ "o.descripcion "
+									+ "from socios s "
+									+ "inner join pagos_cuotas_socios p ON s.id = p.id_socio "
+									+ "inner join opciones o on o.id=s.id_estado_actual "
+									+ "where  (p.anho_cuota <= DATE_PART('year', CURRENT_DATE) and  p.mes_cuota <= DATE_PART('month', CURRENT_DATE))"
+									+ "and not exists (SELECT * FROM pagos_cuotas_socios pg  "
+									+ "    where pg.id_socio = s.id "
+									+ "    and (pg.anho_cuota = DATE_PART('year', CURRENT_DATE) AND pg.mes_cuota = DATE_PART('month', CURRENT_DATE)) )"
+									+ " and s.id_estado_actual=5"
+									+ " group by s.id,s.nombres,s.apellidos,o.descripcion";
+		String queryActivosAlDia = "select  s.id,"
+									+ "      s.nombres,"
+									+ "      s.apellidos,"
+									+ "      o.descripcion  "
+									+ "from socios s "
+									+ "inner join pagos_cuotas_socios p on s.id = p.id_socio "
+									+ "inner join opciones o on o.id=s.id_estado_actual "
+									+ "where p.anho_cuota= date_part('year', CURRENT_DATE) "
+									+ " and p.mes_cuota=  date_part('month', CURRENT_DATE) "
+									+ " and s.id_estado_actual=5 "
+									+ "  group by s.id,s.nombres,s.apellidos,o.descripcion ";
+		String queryInactivos = "select s.id,"
+								+ "       s.nombres,"
+								+ "       s.apellidos,"
+								+ "       o.descripcion "
+								+ "from socios s "
+								+ "inner join opciones o on  o.id=s.id_estado_actual "
+								+ "where s.id_estado_actual <> 5 ";
+		String union = " UNION ALL " ;
+		StringBuilder concatQuery =  new StringBuilder();
+		
+		if(filtro == null || filtro.equals("TODOS"))
+		{
+			queryConsulta = queryActivosNoAlDia + union + queryActivosAlDia + union + queryInactivos;
+		}else if(filtro.equals("ACTIVOS_EN_MORA")){
+			queryConsulta = queryActivosNoAlDia;
+		}else if(filtro.equals("ACTIVOS_AL_DIA")){
+			queryConsulta = queryActivosAlDia;
+		}else if(filtro.equals("INACTIVOS")){
+			queryConsulta = queryInactivos;
+		}else {
+			queryConsulta = queryActivosNoAlDia + union + queryActivosAlDia + union + queryInactivos;
+		}
+		List<Socio> socios = new ArrayList<>();
+		try {
+			PreparedStatement ps = c.prepareStatement(queryConsulta);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Socio socio;
+				socio = new Socio();
+				socio.setId(rs.getInt("id"));
+				socio.setNombres(rs.getString("nombres"));
+				socio.setApellidos(rs.getString("apellidos"));
+				Opcion opcion = new Opcion();
+				opcion.setDescripcion(rs.getString("descripcion"));
+				socio.setEstadoActual(opcion);
+				socios.add(socio);
+			}
+		} catch (Exception e) {
+			System.out.println("Fallo al ejecutar la query" + e.getMessage());
+		} finally {
+			ConexionBD.cerrarConexion(c);
+		}
+		return socios;
+	}
+
 }
 
 
