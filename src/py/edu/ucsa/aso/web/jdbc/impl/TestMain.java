@@ -15,9 +15,15 @@ import py.edu.ucsa.aso.web.jdbc.dto.Socio;
 import py.edu.ucsa.aso.web.jdbc.dto.TiposMovimiento;
 import py.edu.ucsa.aso.web.jdbc.dto.Usuario;
 import py.edu.ucsa.aso.web.jdbc.dto.PagosCuotaSocios;
+import py.edu.ucsa.aso.web.jdbc.dto.Rol;
 public class TestMain {
 	public static void main(String[] args) {
-		DAOFactory.getSocioDAO().suspenderSocio(14,"Atraso de Cuota", 3);
+		//DAOFactory.getSocioDAO().suspenderSocio(14,"Atraso de Cuota", 3);
+		
+		List<Rol> roles=DAOFactory.getUsuarioDAO().getRolesByUsuario(5);
+		 for(Rol rol:roles) {
+			 System.out.println(rol);
+		 }
 		
 		/*
 		 * Usuario us=DAOFactory.getUsuarioDAO().Autenticar("maria", "maria12345");

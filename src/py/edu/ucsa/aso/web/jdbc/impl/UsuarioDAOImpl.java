@@ -51,16 +51,34 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	@Override
 	public List<Rol> getRolesByUsuario(int idUsuario) {
 		List<Rol> roles = new ArrayList<>();
-		Connection c = ConexionBD.getConexion();
+	 	Connection c = ConexionBD.getConexion();
 		PreparedStatement s;
-		/*
-		 * String selectStmt=select r.*, r.nombre_rol as nombre_rol, ru.id_usuario as
-		 * usuario_id from roles r inner join roles_usuarios ru on ru.id_rol= r.id where
-		 * id_usuario=5
-		 */
-		return null;
+		try {
+		  String selectStmt=" select r.*, r.nombre_rol as nombre_rol, ru.id_usuario as usuario_id "
+			     		+ "from roles r inner join roles_usuarios ru on ru.id_rol= r.id "
+			     		+ " where id_usuario= ? ";
+			s = c.prepareStatement(selectStmt);
+			s.setInt(1, idUsuario);
+			ResultSet rs = s.executeQuery();
+			while (rs.next()) {
+			      Rol rol= new Rol();
+			      rol.setId(rs.getInt("id"));
+			      rol.setNombreRol(rs.getString("nombre_rol"));
+			      roles.add(rol);
+			    }
+			       rs.close();
+			       s.close();
+		     } catch (Exception e) {
+			System.out.println("Error al generar la lista " + e.getMessage());
+		      } finally {
+			ConexionBD.cerrarConexion(c);
+		   }
+
+		   return roles;
+	}
+   
 	}
 
 	
 
-}
+

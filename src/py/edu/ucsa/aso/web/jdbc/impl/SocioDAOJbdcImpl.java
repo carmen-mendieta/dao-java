@@ -446,6 +446,7 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 				Socio socio;
 				socio = new Socio();
 				socio.setId(rs.getInt("id"));
+				socio.setNroSocio(rs.getInt("nro_socio"));
 				socio.setNombres(rs.getString("nombres"));
 				socio.setApellidos(rs.getString("apellidos"));
 				Opcion opcion = new Opcion();
