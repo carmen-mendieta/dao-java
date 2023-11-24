@@ -391,7 +391,7 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		c = ConexionBD.getConexion();
 		String queryConsulta = "";
 		String queryActivosNoAlDia = "select "
-									+ "s.id,"
+									+ "s.id,s.nro_socio,"
 									+ "s.nombres,"
 									+ "s.apellidos,"
 									+ "o.descripcion "
@@ -403,8 +403,8 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 									+ "    where pg.id_socio = s.id "
 									+ "    and (pg.anho_cuota = DATE_PART('year', CURRENT_DATE) AND pg.mes_cuota = DATE_PART('month', CURRENT_DATE)) )"
 									+ " and s.id_estado_actual=5"
-									+ " group by s.id,s.nombres,s.apellidos,o.descripcion";
-		String queryActivosAlDia = "select  s.id,"
+									+ " group by s.id,s.nro_socio,s.nombres,s.apellidos,o.descripcion";
+		String queryActivosAlDia = "select  s.id, s.nro_socio,"
 									+ "      s.nombres,"
 									+ "      s.apellidos,"
 									+ "      o.descripcion  "
@@ -414,8 +414,8 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 									+ "where p.anho_cuota= date_part('year', CURRENT_DATE) "
 									+ " and p.mes_cuota=  date_part('month', CURRENT_DATE) "
 									+ " and s.id_estado_actual=5 "
-									+ "  group by s.id,s.nombres,s.apellidos,o.descripcion ";
-		String queryInactivos = "select s.id,"
+									+ "  group by s.id,s.nro_socio,s.nombres,s.apellidos,o.descripcion ";
+		String queryInactivos = "select s.id,s.nro_socio,"
 								+ "       s.nombres,"
 								+ "       s.apellidos,"
 								+ "       o.descripcion "
