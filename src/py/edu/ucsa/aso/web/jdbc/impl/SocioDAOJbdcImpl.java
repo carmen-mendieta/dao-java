@@ -389,7 +389,7 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 	public List<Socio> getListadoSocios(String filtro) {
 		Connection c;
 		c = ConexionBD.getConexion();
-		String queryConsulta = "";
+	//	String queryConsulta = "";
 		String queryActivosNoAlDia = "select "
 									+ "s.id,s.nro_socio,"
 									+ "s.nombres,"
@@ -422,24 +422,28 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 								+ "from socios s "
 								+ "inner join opciones o on  o.id=s.id_estado_actual "
 								+ "where s.id_estado_actual <> 5 ";
-		String union = " UNION ALL " ;
+		//String union = " UNION ALL " ;
 		StringBuilder concatQuery =  new StringBuilder();
 		
-		if(filtro == null || filtro.equals("TODOS"))
-		{
-			queryConsulta = queryActivosNoAlDia + union + queryActivosAlDia + union + queryInactivos;
-		}else if(filtro.equals("ACTIVOS_EN_MORA")){
-			queryConsulta = queryActivosNoAlDia;
-		}else if(filtro.equals("ACTIVOS_AL_DIA")){
-			queryConsulta = queryActivosAlDia;
-		}else if(filtro.equals("INACTIVOS")){
-			queryConsulta = queryInactivos;
-		}else {
-			queryConsulta = queryActivosNoAlDia + union + queryActivosAlDia + union + queryInactivos;
-		}
+
+	    if (filtro == null || filtro.equals("TODOS")) {
+	        concatQuery.append(queryActivosNoAlDia).append(" UNION ALL ")
+	                   .append(queryActivosAlDia).append(" UNION ALL ")
+	                   .append(queryInactivos);
+	    } else if (filtro.equals("ACTIVOS_EN_MORA")) {
+	        concatQuery.append(queryActivosNoAlDia);
+	    } else if (filtro.equals("ACTIVOS_AL_DIA")) {
+	        concatQuery.append(queryActivosAlDia);
+	    } else if (filtro.equals("INACTIVOS")) {
+	        concatQuery.append(queryInactivos);
+	    } else {
+	        concatQuery.append(queryActivosNoAlDia).append(" UNION ALL ")
+	                   .append(queryActivosAlDia).append(" UNION ALL ")
+	                   .append(queryInactivos);
+	    }
 		List<Socio> socios = new ArrayList<>();
 		try {
-			PreparedStatement ps = c.prepareStatement(queryConsulta);
+			PreparedStatement ps = c.prepareStatement(concatQuery.toString());
 			
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
