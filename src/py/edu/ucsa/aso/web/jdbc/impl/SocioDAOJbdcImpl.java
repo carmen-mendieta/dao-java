@@ -288,8 +288,14 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		PreparedStatement ps;
 		LocalDateTime fechaEstadoActual = LocalDateTime.now();
 	    int idEstadoSocio = GetIdEstadoSocioByCodigo("SUS");
+	   // int estadoActual=GetIdEstadoSocioByCodigo("EXP");
 	    int cantidadSuspenciones = 0;
 	       try {
+	    	   
+//	      if ("EXP".equals(estadoActual)) {
+//	               System.out.println("El socio ya está expulsado. No se puede suspender.");
+//	               
+//	        }
 	         c.setAutoCommit(false);
 		String setenciaInsert="INSERT INTO estados_socios(" 
 				+ "	id_socio ,id_estado, fecha_estado, "
@@ -310,7 +316,7 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 						ps.setInt(3, idSocio);
 						ps.executeUpdate();
 						ps.close();
-						c.commit();				
+							
 						
 		String selectCantidades = "select count(*) as Cantidad  "
 									+ "from estados_socios es "
@@ -329,7 +335,7 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 			
 			if(cantidadSuspenciones == 3) {
 				idEstadoSocio = GetIdEstadoSocioByCodigo("EXP");
-			    c.setAutoCommit(false);
+			
 			    setenciaInsert="INSERT INTO estados_socios(" 
 			    		+ "	id_socio ,id_estado, fecha_estado, "
 			    		+ " id_usuario_creacion, observacion) " +
@@ -350,11 +356,10 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 			    ps.setInt(3, idSocio);
 			    ps.executeUpdate();
 			    ps.close();
-			    c.commit();
+					
 				
 			}
-			
-			
+	    	c.commit();	
 		} catch (Exception e) {
 			System.out.println("Fallo al ejecutar la query" + e.getMessage());
 		} finally {
