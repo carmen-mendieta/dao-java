@@ -288,15 +288,10 @@ public class SocioDAOJbdcImpl implements SocioDAO {
 		PreparedStatement ps;
 		LocalDateTime fechaEstadoActual = LocalDateTime.now();
 	    int idEstadoSocio = GetIdEstadoSocioByCodigo("SUS");
-	   // int estadoActual=GetIdEstadoSocioByCodigo("EXP");
 	    int cantidadSuspenciones = 0;
 	       try {
 	    	   
-//	      if ("EXP".equals(estadoActual)) {
-//	               System.out.println("El socio ya está expulsado. No se puede suspender.");
-//	               
-//	        }
-	         c.setAutoCommit(false);
+         c.setAutoCommit(false);
 		String setenciaInsert="INSERT INTO estados_socios(" 
 				+ "	id_socio ,id_estado, fecha_estado, "
 							+ " id_usuario_creacion, observacion) " +
