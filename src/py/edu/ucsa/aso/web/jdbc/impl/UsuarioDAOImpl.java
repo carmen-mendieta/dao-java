@@ -31,6 +31,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			ps.setString(2, clave);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
+				us.setId(rs.getInt("id"));
 				us.setUsuario(rs.getString("usuario"));
 				us.setEmail(rs.getString("email"));
 				
