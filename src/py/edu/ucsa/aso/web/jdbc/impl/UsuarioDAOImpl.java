@@ -64,7 +64,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			while (rs.next()) {
 			      Rol rol= new Rol();
 			      rol.setId(rs.getInt("id"));
-			      rol.setNombreRol(rs.getString("nombre_rol"));
+			      rol.setNombreRol(rs.getString("nombre_rol").trim());
 			      roles.add(rol);
 			    }
 			       rs.close();
